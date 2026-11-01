@@ -11,7 +11,7 @@ FROM node:22-alpine AS assets
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=2000
 COPY vite.config.js ./
 COPY resources ./resources
 RUN npm run build
