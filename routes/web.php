@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ListeController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'accueil')->name('accueil');
@@ -18,7 +19,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::view('/mes-listes', 'listes.index')->name('listes');
+    Route::get('/mes-listes', [ListeController::class, 'index'])->name('listes');
+    Route::get('/mes-listes/nouvelle', [ListeController::class, 'create'])->name('listes.create');
+    Route::post('/mes-listes', [ListeController::class, 'store'])->name('listes.store');
+    Route::get('/mes-listes/{liste}', [ListeController::class, 'show'])->name('listes.show');
     Route::post('/deconnexion', [AuthController::class, 'deconnexion'])->name('deconnexion');
 });
 

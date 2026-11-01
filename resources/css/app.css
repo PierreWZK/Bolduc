@@ -201,6 +201,20 @@ a { color: inherit; }
 .fin { text-align: center; padding-block: 48px 104px; }
 .fin h2 { margin: 0 auto 32px; }
 
+/* Listes */
+.listes { display: grid; gap: 16px; margin: 32px 0; }
+.liste-carte { display: grid; justify-items: start; gap: 8px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+.liste-carte strong { font: 800 24px/1.15 var(--titre); letter-spacing: -0.02em; }
+@media (hover: hover) {
+    .liste-carte:hover { transform: translateY(-2px); box-shadow: var(--ombre); }
+}
+.liste-infos { display: grid; gap: 6px; margin: 24px 0 32px; font-size: 18px; }
+.lien-secret { max-width: 560px; }
+.lien-secret p { margin-top: 10px; color: var(--brume); }
+.champ select { min-height: 52px; padding: 0 20px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; color: inherit; }
+.champ select:focus { outline: none; border-color: var(--encre); background: #fff; }
+.champ select[aria-invalid="true"] { border-color: var(--bolduc); }
+
 /* Comptes et formulaires */
 .entete-liens { display: flex; align-items: center; gap: 20px; }
 .lien { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }

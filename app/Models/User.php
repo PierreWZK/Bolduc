@@ -17,6 +17,11 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public function listes(): BelongsToMany
+    {
+        return $this->belongsToMany(Liste::class, 'list_owners', 'user_id', 'list_id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *
