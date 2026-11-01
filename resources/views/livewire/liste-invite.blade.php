@@ -55,6 +55,10 @@
                     <span class="pastille pastille-rose">Coup de cœur</span>
                 @endif
 
+                @if ($cadeau->secret)
+                    <span class="pastille pastille-or">Idée secrète de {{ $cadeau->ajouteePar?->name }}</span>
+                @endif
+
                 @if ($cadeau->shared)
                     <span class="pastille pastille-encre">À plusieurs</span>
                     @if ($maPart)

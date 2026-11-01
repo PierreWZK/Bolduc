@@ -239,6 +239,17 @@ a { color: inherit; }
 .message-info { background: var(--or-pale); color: var(--or-texte); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
+/* Idées de cadeaux */
+.filtres { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin: 32px 0 40px; }
+.filtres .champ { flex: 1 1 220px; }
+.idees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.idee { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.idee p { color: var(--brume); }
+.idee .h3 { margin-top: 6px; }
+.idee form { margin-top: auto; padding-top: 8px; }
+.idee-ajout { display: grid; gap: 10px; width: 100%; }
+.idee-ajout select { min-height: 44px; padding: 0 16px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; }
+
 /* Comptes et formulaires */
 .entete-liens { display: flex; align-items: center; gap: 20px; }
 .lien { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }

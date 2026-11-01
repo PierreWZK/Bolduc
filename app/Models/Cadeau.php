@@ -10,17 +10,23 @@ class Cadeau extends Model
 {
     protected $table = 'gifts';
 
-    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'shared', 'note'];
+    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'shared', 'secret', 'added_by', 'note'];
 
     protected $casts = [
         'price' => 'decimal:2',
         'favorite' => 'boolean',
         'shared' => 'boolean',
+        'secret' => 'boolean',
     ];
 
     public function liste(): BelongsTo
     {
         return $this->belongsTo(Liste::class, 'list_id');
+    }
+
+    public function ajouteePar(): BelongsTo
+    {
+        return $this->belongsTo(Invite::class, 'added_by');
     }
 
     public function reservations(): HasMany
