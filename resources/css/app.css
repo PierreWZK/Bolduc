@@ -201,6 +201,55 @@ a { color: inherit; }
 .fin { text-align: center; padding-block: 48px 104px; }
 .fin h2 { margin: 0 auto 32px; }
 
+/* Listes */
+.listes { display: grid; gap: 16px; margin: 32px 0; }
+.liste-carte { display: grid; justify-items: start; gap: 8px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+.liste-carte strong { font: 800 24px/1.15 var(--titre); letter-spacing: -0.02em; }
+@media (hover: hover) {
+    .liste-carte:hover { transform: translateY(-2px); box-shadow: var(--ombre); }
+}
+.liste-infos { display: grid; gap: 6px; margin: 24px 0 32px; font-size: 18px; }
+.lien-secret { max-width: 560px; }
+.lien-secret p { margin-top: 10px; color: var(--brume); }
+.champ select { min-height: 52px; padding: 0 20px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; color: inherit; }
+.champ select:focus { outline: none; border-color: var(--encre); background: #fff; }
+.champ select[aria-invalid="true"] { border-color: var(--bolduc); }
+
+/* Cadeaux */
+.cadeaux-titre { margin-top: 56px; }
+.cadeau-fiche { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 14px; padding: 16px; border: 1px solid var(--filet); border-radius: 20px; background: #fff; }
+.cadeau-fiche .cadeau-texte { flex: 1; min-width: 180px; }
+.cadeau-photo { width: 72px; height: 72px; flex: none; border-radius: 14px; object-fit: cover; background: var(--rose); }
+.ajout-cadeau { max-width: 640px; margin-top: 32px; }
+.ajout-cadeau h2 { margin-bottom: 20px; }
+.ajout-ligne { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.coeur { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; }
+.coeur input { width: 20px; height: 20px; accent-color: var(--bolduc); }
+
+/* Partage et vue invité */
+.lien-partage { display: flex; gap: 8px; margin-top: 16px; padding: 6px 6px 6px 18px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); }
+.lien-partage input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 15px; color: var(--brume); }
+.lien-partage input:focus { outline: none; color: var(--encre); }
+.invite-bonjour { margin-bottom: 8px; font-size: 19px; }
+.invite-prenom { margin: 8px 0 0; }
+.cadeau-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 12px; }
+.part-saisie { display: flex; gap: 8px; }
+.part-saisie input { width: 120px; min-height: 36px; padding: 0 14px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; font-size: 15px; }
+.part-saisie input:focus { outline: none; border-color: var(--encre); background: #fff; }
+.message-info { background: var(--or-pale); color: var(--or-texte); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Idées de cadeaux */
+.filtres { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin: 32px 0 40px; }
+.filtres .champ { flex: 1 1 220px; }
+.idees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.idee { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.idee p { color: var(--brume); }
+.idee .h3 { margin-top: 6px; }
+.idee form { margin-top: auto; padding-top: 8px; }
+.idee-ajout { display: grid; gap: 10px; width: 100%; }
+.idee-ajout select { min-height: 44px; padding: 0 16px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; }
+
 /* Comptes et formulaires */
 .entete-liens { display: flex; align-items: center; gap: 20px; }
 .lien { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
@@ -252,3 +301,13 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Jeux du jour (/jeux) */
+.jeux-grille { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 36px; }
+@media (min-width: 900px) { .jeux-grille { grid-template-columns: 1fr 1fr; } }
+.jeu { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.jeu-photo { margin: 0; }
+.jeu-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; background: var(--rose); transition: filter .4s; }
+.jeu-photo figcaption { margin-top: 8px; }
+.jeu-partage { white-space: pre-wrap; background: var(--papier); border-radius: 16px; padding: 14px; font-family: inherit; }
+.jeu-essais { padding-left: 20px; color: var(--brume); }

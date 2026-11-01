@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Disallow: /mes-listes
+Disallow: /secret-santa
+Disallow: /l/
+Disallow: /s/
+Disallow: /reinitialiser/
+Disallow: /connexion
+Disallow: /inscription
+Disallow: /mot-de-passe-oublie
+Disallow: /deconnexion
+
+Sitemap: https://bolduc.projectp.fr/sitemap.xml
