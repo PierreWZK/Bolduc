@@ -35,11 +35,9 @@ class DailyItemSeeder extends Seeder
             ["Diffuseur d'huiles essentielles", 29, 'diffuseur', $pexels],
         ];
 
-        DailyItem::query()->delete();
-
+        // Relancé à chaque déploiement : on met à jour sans effacer, les identifiants (et donc le tirage) restent stables.
         foreach ($objets as [$nom, $prix, $slug, $credit]) {
-            DailyItem::create([
-                'name' => $nom,
+            DailyItem::updateOrCreate(['name' => $nom], [
                 'price' => $prix,
                 'image' => "images/jeux/$slug.jpg",
                 'credit' => $credit,

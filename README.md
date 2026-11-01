@@ -29,7 +29,20 @@ php artisan serve            # http://127.0.0.1:8000
 
 ## Mise en ligne
 
-Prévue sur Coolify : **https://bolduc.projectp.fr**.
+Bolduc est hébergé sur un VPS avec **[Coolify](https://coolify.io)** : **https://bolduc.projectp.fr**. Coolify redéploie le site à chaque push sur `master`.
+
+| Élément | Réglage dans Coolify |
+| --- | --- |
+| **Application** | Dépôt GitHub `PierreWZK/Bolduc`, build pack **Dockerfile**, port 80 |
+| **Image** | [`Dockerfile`](Dockerfile) : les assets Vite sont compilés avec Node, puis servis par FrankenPHP (Caddy + PHP 8.4) |
+| **Serveur web** | [`docker/Caddyfile`](docker/Caddyfile) et [`docker/php.ini`](docker/php.ini) : fichiers cachés jamais servis, version de PHP masquée |
+| **Après chaque déploiement** | `php artisan migrate --force && php artisan db:seed --class=IdeeSeeder --force && php artisan db:seed --class=DailyItemSeeder --force && php artisan optimize` |
+| **Tâche planifiée** | `php artisan schedule:run`, chaque minute (`* * * * *`) : elle envoie les rappels J-7 à 9 h |
+| **Base de données** | MySQL dans Coolify, reliée par la variable `DB_URL` |
+| **Variables** | `APP_KEY`, `APP_URL=https://bolduc.projectp.fr`, `APP_ENV=production`, `APP_DEBUG=false`, `APP_LOCALE=fr`, `DB_CONNECTION=mysql`, `DB_URL`, `SESSION_SECURE_COOKIE=true`, et l'envoi des mails : `MAIL_MAILER=smtp`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS` ; jamais versionnées |
+| **HTTPS** | Certificat Let's Encrypt géré par Coolify ; Laravel fait confiance à son proxy (`trustProxies` dans `bootstrap/app.php`) pour que les liens restent en `https://` |
+
+Les deux seeders se relancent sans risque : ils mettent à jour sans effacer. Le compte de démonstration du `DatabaseSeeder` n'est jamais créé en production.
 
 ## Stack
 
