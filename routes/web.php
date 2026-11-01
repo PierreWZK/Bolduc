@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CadeauController;
 use App\Http\Controllers\IdeeController;
+use App\Http\Controllers\JeuxController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\SantaController;
 use App\Http\Controllers\SoireeController;
@@ -58,5 +59,5 @@ Route::get('/idees', [IdeeController::class, 'index'])->name('idees');
 Route::get('/l/{token}/idees', [IdeeController::class, 'index'])->name('invite.idees');
 Route::post('/l/{token}/idees/{idee}', [IdeeController::class, 'ajouterEnSecret'])->name('invite.idees.ajouter');
 
-// Pages pas encore construites : une page « bientôt » en attendant.
-Route::view('/jeux', 'bientot', ['titre' => 'Jeux du jour'])->name('jeux');
+// Jeux du jour : un objet par jour, le même pour tout le monde.
+Route::get('/jeux', [JeuxController::class, 'index'])->name('jeux');

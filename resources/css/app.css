@@ -301,3 +301,13 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Jeux du jour (/jeux) */
+.jeux-grille { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 36px; }
+@media (min-width: 900px) { .jeux-grille { grid-template-columns: 1fr 1fr; } }
+.jeu { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.jeu-photo { margin: 0; }
+.jeu-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; background: var(--rose); transition: filter .4s; }
+.jeu-photo figcaption { margin-top: 8px; }
+.jeu-partage { white-space: pre-wrap; background: var(--papier); border-radius: 16px; padding: 14px; font-family: inherit; }
+.jeu-essais { padding-left: 20px; color: var(--brume); }

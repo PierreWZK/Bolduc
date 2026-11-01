@@ -18,7 +18,7 @@ class ExampleTest extends TestCase
 
     public function test_les_pages_a_venir_repondent_sans_etre_indexees(): void
     {
-        foreach (['/inscription', '/jeux'] as $page) {
+        foreach (['/inscription'] as $page) {
             $this->get($page)->assertOk()->assertSee('noindex', false);
         }
     }

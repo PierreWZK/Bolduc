@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(IdeeSeeder::class);
+        $this->call(DailyItemSeeder::class);
 
         // Compte de démonstration, en local seulement.
         User::factory()->create([
