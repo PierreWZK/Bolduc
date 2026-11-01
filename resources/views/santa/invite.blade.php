@@ -37,5 +37,12 @@
                 <p class="legende">Ses envies : {{ $cible->wishes ?: 'elle n\'en a pas noté, surprends-la !' }}</p>
             </div>
         @endif
+
+        @if ($membre && $groupe->estTire())
+            <div class="carte santa-attente">
+                <p class="surtitre">Mode soirée</p>
+                <p><a class="bouton bouton-encre" href="{{ route('santa.indices', $groupe->share_token) }}">Écrire mes indices</a> <a class="bouton bouton-plein" href="{{ route('santa.soiree', $groupe->share_token) }}">Jouer</a></p>
+            </div>
+        @endif
     </section>
 </x-layout>

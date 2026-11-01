@@ -113,7 +113,7 @@ class SantaController extends Controller
         return $jeton ? $groupe->membres()->where('token', $jeton)->with('cible')->first() : null;
     }
 
-    private static function cookie(SantaGroupe $groupe): string
+    public static function cookie(SantaGroupe $groupe): string
     {
         return 'santa_'.$groupe->id;
     }

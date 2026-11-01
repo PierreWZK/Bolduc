@@ -5,6 +5,7 @@ use App\Http\Controllers\CadeauController;
 use App\Http\Controllers\IdeeController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\SantaController;
+use App\Http\Controllers\SoireeController;
 use App\Http\Controllers\ListeController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,11 @@ Route::post('/l/{token}/prenom', [InviteController::class, 'prenom'])->middlewar
 // Lien d'invitation d'un Secret Santa : les participants n'ont pas de compte.
 Route::get('/s/{token}', [SantaController::class, 'invite'])->name('santa.invite');
 Route::post('/s/{token}', [SantaController::class, 'rejoindre'])->middleware('throttle:10,1')->name('santa.rejoindre');
+
+// Mode soirée : les indices (écrits par le donneur) et les deux jeux, une fois le tirage fait.
+Route::get('/s/{token}/indices', [SoireeController::class, 'indices'])->name('santa.indices');
+Route::post('/s/{token}/indices', [SoireeController::class, 'sauverIndices'])->name('santa.indices.sauver');
+Route::get('/s/{token}/soiree', [SoireeController::class, 'soiree'])->name('santa.soiree');
 
 Route::get('/idees', [IdeeController::class, 'index'])->name('idees');
 Route::get('/l/{token}/idees', [IdeeController::class, 'index'])->name('invite.idees');
