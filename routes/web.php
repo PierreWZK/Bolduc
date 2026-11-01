@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/idees/{idee}/ajouter', [IdeeController::class, 'ajouter'])->name('idees.ajouter');
     Route::post('/mes-listes/{liste}/cadeaux', [CadeauController::class, 'store'])->name('cadeaux.store');
     Route::delete('/mes-listes/{liste}/cadeaux/{cadeau}', [CadeauController::class, 'destroy'])->name('cadeaux.destroy');
+    Route::post('/mes-listes/{liste}/cadeaux/{cadeau}/merci', [CadeauController::class, 'merci'])->name('cadeaux.merci');
     Route::post('/deconnexion', [AuthController::class, 'deconnexion'])->name('deconnexion');
 });
 

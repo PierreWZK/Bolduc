@@ -10,13 +10,14 @@ class Cadeau extends Model
 {
     protected $table = 'gifts';
 
-    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'shared', 'secret', 'added_by', 'note'];
+    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'shared', 'secret', 'added_by', 'note', 'thanked'];
 
     protected $casts = [
         'price' => 'decimal:2',
         'favorite' => 'boolean',
         'shared' => 'boolean',
         'secret' => 'boolean',
+        'thanked' => 'boolean',
     ];
 
     public function liste(): BelongsTo

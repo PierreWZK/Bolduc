@@ -24,6 +24,39 @@
             </div>
         </div>
 
+        @if ($passee)
+            <h2 class="h3 cadeaux-titre">Remerciements</h2>
+            <p class="legende">La date est passée : voici qui a offert quoi. Coche « merci envoyé » une fois fait.</p>
+
+            @forelse ($liste->cadeaux as $cadeau)
+                @php
+                    $donneurs = $cadeau->reservations->pluck('invite.name')
+                        ->merge($cadeau->contributions->map(fn ($part) => $part->invite?->name.' ('.number_format((float) $part->amount, 2, ',', ' ').' €)'));
+                @endphp
+                <article class="cadeau-fiche">
+                    <div class="cadeau-texte">
+                        <strong>{{ $cadeau->title }}</strong>
+                        <span>
+                            @if ($cadeau->secret)
+                                Idée de {{ $cadeau->ajouteePar?->name }}, en secret
+                            @elseif ($donneurs->isNotEmpty())
+                                Offert par {{ $donneurs->join(', ') }}
+                            @else
+                                Personne ne l'a réservé
+                            @endif
+                        </span>
+                    </div>
+                    <form method="POST" action="{{ route('cadeaux.merci', [$liste, $cadeau]) }}">
+                        @csrf
+                        <button type="submit" class="pastille {{ $cadeau->thanked ? 'pastille-menthe' : 'pastille-rose' }}" aria-pressed="{{ $cadeau->thanked ? 'true' : 'false' }}">
+                            {{ $cadeau->thanked ? '✓ Merci envoyé' : 'Merci pas encore envoyé' }}
+                        </button>
+                    </form>
+                </article>
+            @empty
+                <p class="legende">Aucun cadeau dans cette liste.</p>
+            @endforelse
+        @else
         <h2 class="h3 cadeaux-titre">Les cadeaux <span class="legende">({{ $liste->cadeaux->count() }})</span></h2>
 
         @forelse ($liste->cadeaux as $cadeau)
@@ -62,7 +95,7 @@
         @empty
             <p class="legende">Pas encore de cadeau. Colle un lien de boutique ci-dessous.</p>
         @endforelse
-
+        @unless ($passee)
         <div class="carte ajout-cadeau">
             <h2 class="h3">Ajouter un cadeau</h2>
             <form method="POST" action="{{ route('cadeaux.store', $liste) }}" class="formulaire">
@@ -88,5 +121,7 @@
                 <button type="submit" class="bouton bouton-plein">Ajouter à la liste</button>
             </form>
         </div>
+        @endunless
+        @endif
     </section>
 </x-layout>

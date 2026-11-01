@@ -53,10 +53,23 @@ class ListeController extends Controller
         // Une liste qui n'est pas à toi n'existe pas pour toi.
         abort_unless($liste->estProprietaire($request->user()), 404);
 
-        // Les idées ajoutées en secret par un invité n'apparaissent pas ici : c'est toute la surprise.
-        return view('listes.show', ['liste' => $liste->load([
-            'proprietaires',
-            'cadeaux' => fn ($requete) => $requete->where('secret', false),
-        ])]);
+        // Avant la date, les idées secrètes restent cachées : c'est toute la surprise.
+        // Après, le propriétaire découvre qui a offert quoi (remerciements).
+        $passee = $liste->estPassee();
+
+        return view('listes.show', [
+            'passee' => $passee,
+            'liste' => $liste->load([
+                'proprietaires',
+                'cadeaux' => function ($requete) use ($passee) {
+                    if (! $passee) {
+                        $requete->where('secret', false);
+                    }
+                },
+                'cadeaux.reservations.invite',
+                'cadeaux.contributions.invite',
+                'cadeaux.ajouteePar',
+            ]),
+        ]);
     }
 }

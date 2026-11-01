@@ -51,6 +51,18 @@ class CadeauController extends Controller
         return back()->with('statut', 'Cadeau ajouté à ta liste.');
     }
 
+    // Case « merci envoyé » : seulement une fois la date passée, quand les remerciements s'ouvrent.
+    public function merci(Request $request, Liste $liste, Cadeau $cadeau)
+    {
+        abort_unless($liste->estProprietaire($request->user()), 404);
+        abort_unless($cadeau->list_id === $liste->id, 404);
+        abort_unless($liste->estPassee(), 403, 'Les remerciements s\'ouvrent après la date.');
+
+        $cadeau->update(['thanked' => ! $cadeau->thanked]);
+
+        return back();
+    }
+
     public function destroy(Request $request, Liste $liste, Cadeau $cadeau)
     {
         abort_unless($liste->estProprietaire($request->user()), 404);
