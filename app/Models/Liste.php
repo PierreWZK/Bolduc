@@ -39,6 +39,11 @@ class Liste extends Model
         return $this->hasMany(Cadeau::class, 'list_id')->orderBy('id');
     }
 
+    public function invites(): HasMany
+    {
+        return $this->hasMany(Invite::class, 'list_id');
+    }
+
     public function estProprietaire(User $user): bool
     {
         return $this->proprietaires()->whereKey($user->id)->exists();
@@ -47,6 +52,13 @@ class Liste extends Model
     public function libelleEvenement(): string
     {
         return self::EVENEMENTS[$this->event_type] ?? 'Autre';
+    }
+
+    public function estPassee(): bool
+    {
+        $jours = $this->joursAvant();
+
+        return $jours !== null && $jours < 0;
     }
 
     // Jours restants avant l'événement ; négatif s'il est passé, null sans date.

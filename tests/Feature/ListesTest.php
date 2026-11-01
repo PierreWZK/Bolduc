@@ -23,6 +23,7 @@ class ListesTest extends TestCase
 
         $liste = Liste::firstOrFail();
         $this->assertSame('Noël chez Camille', $liste->title);
+        $this->get('/mes-listes')->assertOk()->assertSee('Noël chez Camille');
         $this->assertSame(40, strlen($liste->share_token));
         $this->assertTrue($liste->estProprietaire($camille));
     }

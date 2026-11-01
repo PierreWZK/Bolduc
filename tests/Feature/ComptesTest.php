@@ -24,7 +24,7 @@ class ComptesTest extends TestCase
 
         $this->assertAuthenticated();
         $this->assertDatabaseHas('users', ['email' => 'camille@exemple.fr']);
-        $this->get('/mes-listes')->assertSee('Bonjour Camille');
+        $this->get('/mes-listes')->assertOk()->assertSee('Bonjour Camille');
     }
 
     public function test_inscription_refuse_un_email_deja_pris(): void

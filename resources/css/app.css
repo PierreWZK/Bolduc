@@ -226,6 +226,19 @@ a { color: inherit; }
 .coeur { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; }
 .coeur input { width: 20px; height: 20px; accent-color: var(--bolduc); }
 
+/* Partage et vue invité */
+.lien-partage { display: flex; gap: 8px; margin-top: 16px; padding: 6px 6px 6px 18px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); }
+.lien-partage input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 15px; color: var(--brume); }
+.lien-partage input:focus { outline: none; color: var(--encre); }
+.invite-bonjour { margin-bottom: 8px; font-size: 19px; }
+.invite-prenom { margin: 8px 0 0; }
+.cadeau-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 12px; }
+.part-saisie { display: flex; gap: 8px; }
+.part-saisie input { width: 120px; min-height: 36px; padding: 0 14px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; font-size: 15px; }
+.part-saisie input:focus { outline: none; border-color: var(--encre); background: #fff; }
+.message-info { background: var(--or-pale); color: var(--or-texte); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
 /* Comptes et formulaires */
 .entete-liens { display: flex; align-items: center; gap: 20px; }
 .lien { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }

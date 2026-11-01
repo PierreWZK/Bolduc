@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CadeauController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ListeController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/mes-listes/{liste}/cadeaux/{cadeau}', [CadeauController::class, 'destroy'])->name('cadeaux.destroy');
     Route::post('/deconnexion', [AuthController::class, 'deconnexion'])->name('deconnexion');
 });
+
+// Lien secret d'une liste, ouvert par les invités sans compte.
+Route::get('/l/{token}', [InviteController::class, 'show'])->name('invite');
+Route::post('/l/{token}/prenom', [InviteController::class, 'prenom'])->middleware('throttle:10,1')->name('invite.prenom');
 
 // Pages pas encore construites : une page « bientôt » en attendant.
 Route::view('/idees', 'bientot', ['titre' => 'Idées de cadeaux'])->name('idees');

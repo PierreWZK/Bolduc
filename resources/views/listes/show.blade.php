@@ -10,26 +10,18 @@
         <h1 class="titre-page">{{ $liste->title }}</h1>
 
         <div class="liste-infos">
-            @if ($liste->event_date)
-                <p>
-                    <strong>{{ $liste->event_date->locale('fr')->isoFormat('D MMMM YYYY') }}</strong>
-                    @if ($liste->joursAvant() > 0)
-                        · J-{{ $liste->joursAvant() }}
-                    @elseif ($liste->joursAvant() === 0)
-                        · C'est aujourd'hui !
-                    @else
-                        · La date est passée
-                    @endif
-                </p>
-            @else
-                <p>Pas de date fixée.</p>
-            @endif
+            <x-echeance :liste="$liste" />
             <p class="legende">Gérée par {{ $liste->proprietaires->pluck('name')->join(' et ') }}</p>
         </div>
 
-        <div class="carte lien-secret">
+        @php $lien = route('invite', $liste->share_token); @endphp
+        <div class="carte lien-secret" x-data="{ copie: false }">
             <h2 class="h3">Le lien pour tes proches</h2>
-            <p>Il arrive avec la vue invité, à l'étape suivante : tes proches y réservent, et toi tu ne vois rien.</p>
+            <p>Envoie-le par message ou par mail. Tes proches réservent, toi tu ne vois rien.</p>
+            <div class="lien-partage">
+                <input type="text" value="{{ $lien }}" readonly aria-label="Lien de la liste" @focus="$el.select()">
+                <button type="button" class="bouton bouton-encre bouton-mini" @click="navigator.clipboard.writeText(@js($lien)); copie = true" x-text="copie ? 'Copié' : 'Copier'">Copier</button>
+            </div>
         </div>
 
         <h2 class="h3 cadeaux-titre">Les cadeaux <span class="legende">({{ $liste->cadeaux->count() }})</span></h2>
@@ -57,6 +49,9 @@
                 @if ($cadeau->favorite)
                     <span class="pastille pastille-rose">Coup de cœur</span>
                 @endif
+                @if ($cadeau->shared)
+                    <span class="pastille pastille-encre">À plusieurs</span>
+                @endif
 
                 <form method="POST" action="{{ route('cadeaux.destroy', [$liste, $cadeau]) }}">
                     @csrf
@@ -83,6 +78,13 @@
                     <input type="checkbox" name="favorite" value="1">
                     Coup de cœur
                 </label>
+                <label class="coeur">
+                    <input type="checkbox" name="shared" value="1">
+                    À plusieurs : tes proches se partagent le prix
+                </label>
+                @error('shared')
+                    <p class="erreur">{{ $message }}</p>
+                @enderror
                 <button type="submit" class="bouton bouton-plein">Ajouter à la liste</button>
             </form>
         </div>
