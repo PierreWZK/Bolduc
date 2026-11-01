@@ -23,7 +23,14 @@
             <x-noeud class="logo-noeud" />
             <span>Bolduc</span>
         </a>
-        <a href="{{ route('inscription') }}" class="bouton bouton-contour">Créer ma liste</a>
+        @auth
+            <a href="{{ route('listes') }}" class="bouton bouton-contour">Mes listes</a>
+        @else
+            <nav class="entete-liens">
+                <a href="{{ route('login') }}" class="lien">Connexion</a>
+                <a href="{{ route('inscription') }}" class="bouton bouton-contour">Créer ma liste</a>
+            </nav>
+        @endauth
     </header>
 
     <main>
