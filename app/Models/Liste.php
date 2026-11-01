@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Liste extends Model
@@ -31,6 +32,11 @@ class Liste extends Model
     public function proprietaires(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'list_owners', 'list_id', 'user_id');
+    }
+
+    public function cadeaux(): HasMany
+    {
+        return $this->hasMany(Cadeau::class, 'list_id')->orderBy('id');
     }
 
     public function estProprietaire(User $user): bool

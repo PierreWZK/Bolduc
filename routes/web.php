@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CadeauController;
 use App\Http\Controllers\ListeController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/mes-listes/nouvelle', [ListeController::class, 'create'])->name('listes.create');
     Route::post('/mes-listes', [ListeController::class, 'store'])->name('listes.store');
     Route::get('/mes-listes/{liste}', [ListeController::class, 'show'])->name('listes.show');
+    Route::post('/mes-listes/{liste}/cadeaux', [CadeauController::class, 'store'])->name('cadeaux.store');
+    Route::delete('/mes-listes/{liste}/cadeaux/{cadeau}', [CadeauController::class, 'destroy'])->name('cadeaux.destroy');
     Route::post('/deconnexion', [AuthController::class, 'deconnexion'])->name('deconnexion');
 });
 

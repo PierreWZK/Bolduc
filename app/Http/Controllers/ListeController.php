@@ -53,6 +53,6 @@ class ListeController extends Controller
         // Une liste qui n'est pas à toi n'existe pas pour toi.
         abort_unless($liste->estProprietaire($request->user()), 404);
 
-        return view('listes.show', ['liste' => $liste->load('proprietaires')]);
+        return view('listes.show', ['liste' => $liste->load(['proprietaires', 'cadeaux'])]);
     }
 }

@@ -215,6 +215,17 @@ a { color: inherit; }
 .champ select:focus { outline: none; border-color: var(--encre); background: #fff; }
 .champ select[aria-invalid="true"] { border-color: var(--bolduc); }
 
+/* Cadeaux */
+.cadeaux-titre { margin-top: 56px; }
+.cadeau-fiche { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 14px; padding: 16px; border: 1px solid var(--filet); border-radius: 20px; background: #fff; }
+.cadeau-fiche .cadeau-texte { flex: 1; min-width: 180px; }
+.cadeau-photo { width: 72px; height: 72px; flex: none; border-radius: 14px; object-fit: cover; background: var(--rose); }
+.ajout-cadeau { max-width: 640px; margin-top: 32px; }
+.ajout-cadeau h2 { margin-bottom: 20px; }
+.ajout-ligne { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.coeur { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; }
+.coeur input { width: 20px; height: 20px; accent-color: var(--bolduc); }
+
 /* Comptes et formulaires */
 .entete-liens { display: flex; align-items: center; gap: 20px; }
 .lien { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
