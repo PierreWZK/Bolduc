@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CadeauController;
 use App\Http\Controllers\IdeeController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\SantaController;
 use App\Http\Controllers\ListeController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/mes-listes', [ListeController::class, 'store'])->name('listes.store');
     Route::get('/mes-listes/{liste}', [ListeController::class, 'show'])->name('listes.show');
     Route::post('/idees/{idee}/ajouter', [IdeeController::class, 'ajouter'])->name('idees.ajouter');
+
+    Route::get('/secret-santa', [SantaController::class, 'index'])->name('secret-santa');
+    Route::post('/secret-santa', [SantaController::class, 'store'])->name('santa.store');
+    Route::get('/secret-santa/{groupe}', [SantaController::class, 'show'])->name('santa.show');
+    Route::post('/secret-santa/{groupe}/exclusions', [SantaController::class, 'exclure'])->name('santa.exclure');
+    Route::post('/secret-santa/{groupe}/tirage', [SantaController::class, 'tirer'])->name('santa.tirer');
     Route::post('/mes-listes/{liste}/cadeaux', [CadeauController::class, 'store'])->name('cadeaux.store');
     Route::delete('/mes-listes/{liste}/cadeaux/{cadeau}', [CadeauController::class, 'destroy'])->name('cadeaux.destroy');
     Route::post('/mes-listes/{liste}/cadeaux/{cadeau}/merci', [CadeauController::class, 'merci'])->name('cadeaux.merci');
@@ -37,10 +44,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/l/{token}', [InviteController::class, 'show'])->name('invite');
 Route::post('/l/{token}/prenom', [InviteController::class, 'prenom'])->middleware('throttle:10,1')->name('invite.prenom');
 
+// Lien d'invitation d'un Secret Santa : les participants n'ont pas de compte.
+Route::get('/s/{token}', [SantaController::class, 'invite'])->name('santa.invite');
+Route::post('/s/{token}', [SantaController::class, 'rejoindre'])->middleware('throttle:10,1')->name('santa.rejoindre');
+
 Route::get('/idees', [IdeeController::class, 'index'])->name('idees');
 Route::get('/l/{token}/idees', [IdeeController::class, 'index'])->name('invite.idees');
 Route::post('/l/{token}/idees/{idee}', [IdeeController::class, 'ajouterEnSecret'])->name('invite.idees.ajouter');
 
 // Pages pas encore construites : une page « bientôt » en attendant.
-Route::view('/secret-santa', 'bientot', ['titre' => 'Secret Santa'])->name('secret-santa');
 Route::view('/jeux', 'bientot', ['titre' => 'Jeux du jour'])->name('jeux');
