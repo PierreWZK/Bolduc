@@ -4,12 +4,23 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $titre ? $titre.' · Bolduc' : 'Bolduc · La liste de cadeaux qui garde la surprise' }}</title>
+    @php($titreComplet = $titre ? $titre.' · Bolduc' : 'Bolduc · La liste de cadeaux qui garde la surprise')
+    <title>{{ $titreComplet }}</title>
     <meta name="description" content="{{ $description }}">
     <link rel="canonical" href="{{ url()->current() }}">
     @if ($noindex)
         <meta name="robots" content="noindex">
     @endif
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Bolduc">
+    <meta property="og:title" content="{{ $titreComplet }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('og.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Bolduc, la liste de cadeaux qui garde la surprise">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#FFF8F3">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.bunny.net">

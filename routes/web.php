@@ -59,5 +59,10 @@ Route::get('/idees', [IdeeController::class, 'index'])->name('idees');
 Route::get('/l/{token}/idees', [IdeeController::class, 'index'])->name('invite.idees');
 Route::post('/l/{token}/idees/{idee}', [IdeeController::class, 'ajouterEnSecret'])->name('invite.idees.ajouter');
 
+// Seules les pages publiques sont dans le plan du site ; les listes et le Secret Santa ne sont jamais indexés.
+Route::get('/sitemap.xml', fn () => response()
+    ->view('sitemap', ['pages' => [route('accueil'), route('idees')]])
+    ->header('Content-Type', 'application/xml'))->name('sitemap');
+
 // Jeux du jour : un objet par jour, le même pour tout le monde.
 Route::get('/jeux', [JeuxController::class, 'index'])->name('jeux');
