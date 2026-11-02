@@ -18,6 +18,11 @@ class ListeController extends Controller
         return view('listes.index', [
             'listes' => $listes->whereNull('archived_at'),
             'archives' => $listes->whereNotNull('archived_at'),
+            // Les listes de proches que j'ai rejointes en étant connecté.
+            'autres' => Liste::whereHas('invites', fn ($invites) => $invites->where('user_id', $request->user()->id))
+                ->whereNull('archived_at')
+                ->orderByDesc('created_at')
+                ->get(),
         ]);
     }
 

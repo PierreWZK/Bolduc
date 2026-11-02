@@ -9,6 +9,10 @@
             <p class="legende">La liste de {{ $proprietaires }}</p>
         </div>
 
+        @if (session('statut'))
+            <p class="message" role="status">{{ session('statut') }}</p>
+        @endif
+
         @if ($invite)
             <p class="invite-bonjour">Bonjour {{ $invite->name }} ! Réserve ce que tu offres : {{ $proprietaires }} ne verra rien.</p>
             <livewire:liste-invite :liste="$liste" :invite="$invite" />
@@ -20,9 +24,13 @@
                     @csrf
                     <x-champ nom="name" libelle="Ton prénom" autocomplete="given-name" required autofocus />
                     <x-champ nom="email" libelle="Ton e-mail (facultatif)" type="email" autocomplete="email" aide="Pour un rappel avant la fête, rien d'autre." />
+                    <x-champ nom="magic_word" libelle="Ton mot magique" type="password" autocomplete="new-password" aide="Un petit mot à toi, pour te retrouver depuis un autre appareil." required />
                     <button type="submit" class="bouton bouton-plein">Voir la liste</button>
                 </form>
             </div>
+            @if ($noms->isNotEmpty())
+                <x-retrouver :action="route('invite.retrouver', $liste->share_token)" :noms="$noms" />
+            @endif
         @endif
     </section>
 </x-layout>

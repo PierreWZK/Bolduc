@@ -33,6 +33,23 @@
             <a href="{{ route('listes.create') }}" class="bouton bouton-contour">Nouvelle liste</a>
         @endif
 
+        <h2 class="h3 cadeaux-titre">Listes des autres</h2>
+        @if ($autres->isEmpty())
+            <p class="legende">Les listes de tes proches apparaissent ici quand tu les rejoins en étant connecté.</p>
+        @else
+            <ul class="listes">
+                @foreach ($autres as $liste)
+                    <li>
+                        <a href="{{ route('invite', $liste->share_token) }}" class="carte liste-carte">
+                            <span class="pastille pastille-rose">{{ $liste->libelleEvenement() }}</span>
+                            <strong>{{ $liste->title }}</strong>
+                            <span class="legende">{{ $liste->event_date ? $liste->event_date->locale('fr')->isoFormat('D MMMM YYYY') : 'Sans date' }}</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+
         @if ($archives->isNotEmpty())
             <h2 class="h3 cadeaux-titre">Archives</h2>
             <ul class="listes">
