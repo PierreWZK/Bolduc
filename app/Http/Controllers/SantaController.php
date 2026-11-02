@@ -86,6 +86,16 @@ class SantaController extends Controller
         return back()->with('statut', 'Tirage fait ! Chacun découvre sa cible avec son lien. Toi, tu ne sais rien.');
     }
 
+    // Participants, exclusions et indices de soirée partent avec le groupe (cascade en base).
+    public function destroy(Request $request, SantaGroupe $groupe)
+    {
+        abort_unless($groupe->user_id === $request->user()->id, 404);
+
+        $groupe->delete();
+
+        return redirect()->route('secret-santa')->with('statut', 'Secret Santa « '.$groupe->name.' » supprimé.');
+    }
+
     // Côté participant : sans compte. Il donne son prénom et ses envies, puis découvre sa cible après le tirage.
     public function invite(Request $request, string $token)
     {

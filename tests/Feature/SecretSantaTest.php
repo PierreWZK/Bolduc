@@ -198,5 +198,24 @@ class SecretSantaTest extends TestCase
 
         $this->actingAs($intrus)->get('/secret-santa/'.$this->groupe->id)->assertNotFound();
         $this->actingAs($intrus)->post('/secret-santa/'.$this->groupe->id.'/tirage')->assertNotFound();
+        $this->actingAs($intrus)->delete('/secret-santa/'.$this->groupe->id)->assertNotFound();
+        $this->assertModelExists($this->groupe);
+    }
+
+    public function test_l_organisatrice_supprime_son_groupe_et_ses_participants(): void
+    {
+        [$a, $b] = $this->participants(4);
+        $this->exclure($a, $b);
+        app(TirageSecretSanta::class)->tirer($this->groupe);
+
+        $this->actingAs($this->organisatrice)
+            ->delete('/secret-santa/'.$this->groupe->id)
+            ->assertRedirect('/secret-santa')
+            ->assertSessionHas('statut');
+
+        $this->assertModelMissing($this->groupe);
+        $this->assertDatabaseCount('santa_members', 0);
+        $this->assertDatabaseCount('santa_exclusions', 0);
+        $this->get('/s/'.$this->groupe->share_token)->assertNotFound();
     }
 }

@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/secret-santa/{groupe}', [SantaController::class, 'show'])->name('santa.show');
     Route::post('/secret-santa/{groupe}/exclusions', [SantaController::class, 'exclure'])->name('santa.exclure');
     Route::post('/secret-santa/{groupe}/tirage', [SantaController::class, 'tirer'])->name('santa.tirer');
+    Route::delete('/secret-santa/{groupe}', [SantaController::class, 'destroy'])->name('santa.destroy');
     Route::post('/mes-listes/{liste}/cadeaux', [CadeauController::class, 'store'])->name('cadeaux.store');
     Route::delete('/mes-listes/{liste}/cadeaux/{cadeau}', [CadeauController::class, 'destroy'])->name('cadeaux.destroy');
     Route::post('/mes-listes/{liste}/cadeaux/{cadeau}/merci', [CadeauController::class, 'merci'])->name('cadeaux.merci');

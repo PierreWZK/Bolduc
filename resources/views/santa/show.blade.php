@@ -81,5 +81,11 @@
                 @endif
             </form>
         @endif
+
+        <form method="POST" action="{{ route('santa.destroy', $groupe) }}" class="deconnexion" onsubmit="return confirm('Supprimer « {{ addslashes($groupe->name) }} » pour de bon ? Les participants, leurs envies et le tirage partent avec.')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="bouton bouton-encre bouton-mini">Supprimer ce Secret Santa</button>
+        </form>
     </section>
 </x-layout>
