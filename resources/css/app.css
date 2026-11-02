@@ -242,7 +242,9 @@ a { color: inherit; }
 /* Idées de cadeaux */
 .filtres { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin: 32px 0 40px; }
 .filtres .champ { flex: 1 1 220px; }
-.idees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.idees { display: grid; grid-template-columns: 1fr; gap: 18px; }
+@media (min-width: 640px) { .idees { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .idees { grid-template-columns: repeat(3, 1fr); } }
 .idee { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .idee p { color: var(--brume); }
 .idee .h3 { margin-top: 6px; }
