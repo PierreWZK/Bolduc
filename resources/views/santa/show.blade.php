@@ -20,21 +20,51 @@
         </div>
 
         <h2 class="h3 cadeaux-titre">Participants ({{ $groupe->membres->count() }})</h2>
+        @error('participants')
+            <p class="erreur">{{ $message }}</p>
+        @enderror
         @forelse ($groupe->membres as $membre)
-            <article class="cadeau-fiche">
+            <article class="cadeau-fiche" x-data="{ edition: false }">
                 <div class="cadeau-texte">
                     <strong>{{ $membre->name }}</strong>
                     <span>
-                        {{ $membre->wishes ?: 'Pas encore d\'envies' }}
+                        {{ $membre->magic_word ? ($membre->wishes ?: 'Pas encore d\'envies') : 'Ajouté par toi : il rejoint avec ce prénom' }}
                         @if ($membre->exclus->isNotEmpty())
                             · ne tire pas : {{ $membre->exclus->pluck('name')->join(', ') }}
                         @endif
                     </span>
                 </div>
+                <div class="liste-actions" x-show="!edition">
+                    <button type="button" class="lien" @click="edition = true">Renommer</button>
+                    @unless ($groupe->estTire())
+                        <form method="POST" action="{{ route('santa.membres.retirer', [$groupe, $membre]) }}" onsubmit="return confirm('Retirer {{ addslashes($membre->name) }} du groupe ?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="lien">Retirer</button>
+                        </form>
+                    @endunless
+                </div>
+                <form method="POST" action="{{ route('santa.membres.renommer', [$groupe, $membre]) }}" class="liste-actions" x-show="edition" x-cloak>
+                    @csrf
+                    @method('PUT')
+                    <label class="sr-only" for="nom-{{ $membre->id }}">Nouveau prénom</label>
+                    <input id="nom-{{ $membre->id }}" type="text" name="name" value="{{ $membre->name }}" maxlength="40" required class="champ-mini">
+                    <button type="submit" class="bouton bouton-encre bouton-mini">OK</button>
+                    <button type="button" class="lien" @click="edition = false">Annuler</button>
+                </form>
             </article>
         @empty
-            <p class="legende">Pas encore de participant. Partage le lien ci-dessus.</p>
+            <p class="legende">Pas encore de participant. Partage le lien ci-dessus, ou ajoute quelqu'un.</p>
         @endforelse
+
+        @unless ($groupe->estTire())
+            <form method="POST" action="{{ route('santa.membres.ajouter', $groupe) }}" class="liste-actions santa-ajout">
+                @csrf
+                <label class="sr-only" for="nouveau-membre">Prénom à ajouter</label>
+                <input id="nouveau-membre" type="text" name="name" maxlength="40" required placeholder="Prénom de la personne" class="champ-mini">
+                <button type="submit" class="bouton bouton-contour bouton-mini">Ajouter</button>
+            </form>
+        @endunless
 
         @if ($groupe->estTire())
             <div class="carte santa-tire">
