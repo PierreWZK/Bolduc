@@ -29,6 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/mes-listes/nouvelle', [ListeController::class, 'create'])->name('listes.create');
     Route::post('/mes-listes', [ListeController::class, 'store'])->name('listes.store');
     Route::get('/mes-listes/{liste}', [ListeController::class, 'show'])->name('listes.show');
+    Route::get('/mes-listes/{liste}/modifier', [ListeController::class, 'edit'])->name('listes.edit');
+    Route::put('/mes-listes/{liste}', [ListeController::class, 'update'])->name('listes.update');
+    Route::post('/mes-listes/{liste}/archiver', [ListeController::class, 'archiver'])->name('listes.archiver');
+    Route::delete('/mes-listes/{liste}', [ListeController::class, 'destroy'])->name('listes.destroy');
     Route::post('/idees/{idee}/ajouter', [IdeeController::class, 'ajouter'])->name('idees.ajouter');
 
     Route::get('/secret-santa', [SantaController::class, 'index'])->name('secret-santa');

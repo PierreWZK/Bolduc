@@ -14,6 +14,14 @@
             <p class="legende">Gérée par {{ $liste->proprietaires->pluck('name')->join(' et ') }}</p>
         </div>
 
+        <div class="liste-actions">
+            <a href="{{ route('listes.edit', $liste) }}" class="bouton bouton-contour bouton-mini">Modifier les réglages</a>
+            <form method="POST" action="{{ route('listes.archiver', $liste) }}">
+                @csrf
+                <button type="submit" class="bouton bouton-contour bouton-mini">{{ $liste->archived_at ? 'Ressortir des archives' : 'Archiver' }}</button>
+            </form>
+        </div>
+
         @php $lien = route('invite', $liste->share_token); @endphp
         <div class="carte lien-secret" x-data="{ copie: false }">
             <h2 class="h3">Le lien pour tes proches</h2>

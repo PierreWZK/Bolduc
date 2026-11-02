@@ -13,7 +13,7 @@ class Liste extends Model
 
     protected $fillable = ['title', 'event_type', 'event_date'];
 
-    protected $casts = ['event_date' => 'date'];
+    protected $casts = ['event_date' => 'date', 'archived_at' => 'datetime'];
 
     public const EVENEMENTS = [
         'noel' => 'Noël',

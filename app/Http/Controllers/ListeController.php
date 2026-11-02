@@ -15,7 +15,53 @@ class ListeController extends Controller
     {
         $listes = $request->user()->listes()->orderByDesc('lists.created_at')->get();
 
-        return view('listes.index', compact('listes'));
+        return view('listes.index', [
+            'listes' => $listes->whereNull('archived_at'),
+            'archives' => $listes->whereNotNull('archived_at'),
+        ]);
+    }
+
+    public function edit(Request $request, Liste $liste)
+    {
+        abort_unless($liste->estProprietaire($request->user()), 404);
+
+        return view('listes.nouvelle', ['evenements' => Liste::EVENEMENTS, 'liste' => $liste]);
+    }
+
+    public function update(Request $request, Liste $liste)
+    {
+        abort_unless($liste->estProprietaire($request->user()), 404);
+
+        // Pas de « après aujourd'hui » ici : on doit pouvoir corriger la date d'une fête déjà passée.
+        $liste->update($request->validate([
+            'title' => ['required', 'string', 'max:80'],
+            'event_type' => ['required', Rule::in(array_keys(Liste::EVENEMENTS))],
+            'event_date' => ['nullable', 'date'],
+        ]));
+
+        return redirect()->route('listes.show', $liste)->with('statut', 'La liste est à jour.');
+    }
+
+    // Archiver met la liste de côté ; le même bouton la ressort des archives.
+    public function archiver(Request $request, Liste $liste)
+    {
+        abort_unless($liste->estProprietaire($request->user()), 404);
+
+        $liste->forceFill(['archived_at' => $liste->archived_at ? null : now()])->save();
+
+        return redirect()->route('listes')->with('statut', $liste->archived_at
+            ? 'Liste archivée : elle t\'attend dans les archives.'
+            : 'Liste ressortie des archives.');
+    }
+
+    public function destroy(Request $request, Liste $liste)
+    {
+        abort_unless($liste->estProprietaire($request->user()), 404);
+        abort_unless($liste->archived_at, 403, 'Archive la liste avant de la supprimer.');
+
+        $liste->delete();
+
+        return redirect()->route('listes')->with('statut', 'Liste supprimée pour de bon.');
     }
 
     public function create()

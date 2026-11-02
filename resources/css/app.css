@@ -311,3 +311,8 @@ a { color: inherit; }
 .jeu-photo figcaption { margin-top: 8px; }
 .jeu-partage { white-space: pre-wrap; background: var(--papier); border-radius: 16px; padding: 14px; font-family: inherit; }
 .jeu-essais { padding-left: 20px; color: var(--brume); }
+
+/* Actions d'une liste (réglages, archives) et choix du Paquet mystère */
+.liste-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 14px 0; }
+.liste-actions form { margin: 0; }
+.jeu-choix { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; max-height: 240px; overflow-y: auto; }

@@ -81,4 +81,71 @@ class ListesTest extends TestCase
         $this->assertSame(12, (new Liste(['event_date' => now()->addDays(12)->toDateString()]))->joursAvant());
         $this->assertNull((new Liste())->joursAvant());
     }
+
+    private function listeDe(User $user): Liste
+    {
+        $liste = Liste::create(['title' => 'Noël', 'event_type' => 'noel']);
+        $liste->proprietaires()->attach($user);
+
+        return $liste;
+    }
+
+    public function test_on_modifie_les_reglages_de_sa_liste(): void
+    {
+        $camille = User::factory()->create();
+        $liste = $this->listeDe($camille);
+
+        $this->actingAs($camille)->get(route('listes.edit', $liste))->assertOk()->assertSee('Noël');
+        $this->put(route('listes.update', $liste), [
+            'title' => 'Noël en famille',
+            'event_type' => 'anniversaire',
+            'event_date' => '2026-12-24',
+        ])->assertRedirect(route('listes.show', $liste));
+
+        $liste->refresh();
+        $this->assertSame('Noël en famille', $liste->title);
+        $this->assertSame('anniversaire', $liste->event_type);
+        $this->assertSame('2026-12-24', $liste->event_date->toDateString());
+    }
+
+    public function test_seul_un_proprietaire_modifie_ou_archive(): void
+    {
+        $liste = $this->listeDe(User::factory()->create());
+        $intrus = User::factory()->create();
+
+        $this->actingAs($intrus)->get(route('listes.edit', $liste))->assertNotFound();
+        $this->put(route('listes.update', $liste), ['title' => 'Piratée', 'event_type' => 'noel'])->assertNotFound();
+        $this->post(route('listes.archiver', $liste))->assertNotFound();
+        $this->assertSame('Noël', $liste->fresh()->title);
+    }
+
+    public function test_une_liste_archivee_passe_dans_les_archives_et_peut_revenir(): void
+    {
+        $camille = User::factory()->create();
+        $liste = $this->listeDe($camille);
+
+        $this->actingAs($camille)->post(route('listes.archiver', $liste))->assertRedirect(route('listes'));
+        $this->assertNotNull($liste->fresh()->archived_at);
+        $this->get(route('listes'))->assertSee('Archives')->assertSee('Ressortir');
+
+        $this->post(route('listes.archiver', $liste));
+        $this->assertNull($liste->fresh()->archived_at);
+    }
+
+    public function test_on_ne_supprime_qu_une_liste_archivee(): void
+    {
+        $camille = User::factory()->create();
+        $liste = $this->listeDe($camille);
+        $liste->cadeaux()->create(['title' => 'Plaid']);
+
+        $this->actingAs($camille)->delete(route('listes.destroy', $liste))->assertForbidden();
+        $this->assertModelExists($liste);
+
+        $liste->forceFill(['archived_at' => now()])->save();
+        $this->delete(route('listes.destroy', $liste))->assertRedirect(route('listes'));
+
+        // Les cadeaux partent avec la liste.
+        $this->assertModelMissing($liste);
+        $this->assertDatabaseCount('gifts', 0);
+    }
 }
