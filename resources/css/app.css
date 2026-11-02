@@ -317,4 +317,7 @@ a { color: inherit; }
 /* Actions d'une liste (réglages, archives) et choix du Paquet mystère */
 .liste-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 14px 0; }
 .liste-actions form { margin: 0; }
+.cadeau-fiche .liste-actions { margin: 0; }
+.champ-mini { min-height: 36px; min-width: 0; flex: 1 1 160px; padding: 0 16px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; font-size: 15px; }
+[x-cloak] { display: none !important; }
 .jeu-choix { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; max-height: 240px; overflow-y: auto; }

@@ -8,6 +8,7 @@ use App\Models\SantaMembre;
 use App\Services\TirageSecretSanta;
 use App\Support\MotMagique;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -86,6 +87,58 @@ class SantaController extends Controller
         return back()->with('statut', 'Tirage fait ! Chacun découvre sa cible avec son lien. Toi, tu ne sais rien.');
     }
 
+    // Participants, exclusions et indices de soirée partent avec le groupe (cascade en base).
+    public function destroy(Request $request, SantaGroupe $groupe)
+    {
+        abort_unless($groupe->user_id === $request->user()->id, 404);
+
+        $groupe->delete();
+
+        return redirect()->route('secret-santa')->with('statut', 'Secret Santa « '.$groupe->name.' » supprimé.');
+    }
+
+    // Ajouté par l'organisatrice, sans mot magique : la personne reprend sa place en rejoignant avec ce prénom.
+    public function ajouterMembre(Request $request, SantaGroupe $groupe)
+    {
+        abort_unless($groupe->user_id === $request->user()->id, 404);
+        abort_if($groupe->estTire(), 403, 'Le tirage a déjà eu lieu.');
+
+        $nom = trim($request->validate(['name' => ['required', 'string', 'max:40']])['name']);
+
+        if (MotMagique::prenomPris($groupe->membres()->pluck('name'), $nom)) {
+            return back()->withErrors(['participants' => 'Ce prénom est déjà dans le groupe.']);
+        }
+
+        $groupe->membres()->create(['name' => $nom]);
+
+        return back()->with('statut', $nom.' est ajouté au groupe.');
+    }
+
+    public function renommerMembre(Request $request, SantaGroupe $groupe, SantaMembre $membre)
+    {
+        abort_unless($groupe->user_id === $request->user()->id, 404);
+
+        $nom = trim($request->validate(['name' => ['required', 'string', 'max:40']])['name']);
+
+        if (MotMagique::prenomPris($groupe->membres()->whereKeyNot($membre->id)->pluck('name'), $nom)) {
+            return back()->withErrors(['participants' => 'Ce prénom est déjà dans le groupe.']);
+        }
+
+        $membre->update(['name' => $nom]);
+
+        return back()->with('statut', 'Participant renommé en '.$nom.'.');
+    }
+
+    public function retirerMembre(Request $request, SantaGroupe $groupe, SantaMembre $membre)
+    {
+        abort_unless($groupe->user_id === $request->user()->id, 404);
+        abort_if($groupe->estTire(), 403, 'Le tirage a déjà eu lieu : retirer quelqu\'un le casserait.');
+
+        $membre->delete();
+
+        return back()->with('statut', $membre->name.' a quitté le groupe.');
+    }
+
     // Côté participant : sans compte. Il donne son prénom et ses envies, puis découvre sa cible après le tirage.
     public function invite(Request $request, string $token)
     {
@@ -118,6 +171,20 @@ class SantaController extends Controller
             'magic_word' => ['required', 'string', 'min:3', 'max:40'],
             'wishes' => ['nullable', 'string', 'max:240'],
         ]);
+
+        // Une place réservée par l'organisatrice (pas encore de mot magique) : la personne la reprend.
+        // shortcut: n'importe qui connaissant le prénom peut la prendre, acceptable entre proches ; sinon, un code par place.
+        $reservee = $groupe->membres()->whereNull('magic_word')->get()
+            ->first(fn (SantaMembre $place) => mb_strtolower($place->name) === mb_strtolower(trim($donnees['name'])));
+        if ($reservee) {
+            $reservee->update([
+                ...Arr::except($donnees, 'name'),
+                'magic_word' => MotMagique::normaliser($donnees['magic_word']),
+            ]);
+            Cookie::queue(self::cookie($groupe), $reservee->token, 60 * 24 * 30);
+
+            return redirect()->route('santa.invite', $token);
+        }
 
         // Deux « Inès » dans le groupe, et plus personne ne sait qui retrouver.
         if (MotMagique::prenomPris($groupe->membres()->pluck('name'), $donnees['name'])) {

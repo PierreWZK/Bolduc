@@ -198,5 +198,82 @@ class SecretSantaTest extends TestCase
 
         $this->actingAs($intrus)->get('/secret-santa/'.$this->groupe->id)->assertNotFound();
         $this->actingAs($intrus)->post('/secret-santa/'.$this->groupe->id.'/tirage')->assertNotFound();
+        $this->actingAs($intrus)->delete('/secret-santa/'.$this->groupe->id)->assertNotFound();
+        $this->assertModelExists($this->groupe);
+    }
+
+    public function test_l_organisatrice_ajoute_renomme_et_retire_un_participant(): void
+    {
+        $base = '/secret-santa/'.$this->groupe->id.'/membres';
+        $this->actingAs($this->organisatrice);
+
+        $this->post($base, ['name' => 'Mamie'])->assertSessionHas('statut');
+        $mamie = $this->groupe->membres()->firstOrFail();
+
+        $this->post($base, ['name' => 'MAMIE'])->assertSessionHasErrors('participants');
+        $this->assertSame(1, $this->groupe->membres()->count());
+
+        $this->put($base.'/'.$mamie->id, ['name' => 'Mamie Jo'])->assertSessionHas('statut');
+        $this->assertSame('Mamie Jo', $mamie->fresh()->name);
+
+        $this->delete($base.'/'.$mamie->id)->assertSessionHas('statut');
+        $this->assertModelMissing($mamie);
+    }
+
+    public function test_apres_le_tirage_on_renomme_mais_on_n_ajoute_ni_ne_retire(): void
+    {
+        [$a] = $this->participants(3);
+        app(TirageSecretSanta::class)->tirer($this->groupe);
+        $base = '/secret-santa/'.$this->groupe->id.'/membres';
+        $this->actingAs($this->organisatrice);
+
+        $this->post($base, ['name' => 'Tard'])->assertForbidden();
+        $this->delete($base.'/'.$a->id)->assertForbidden();
+        $this->put($base.'/'.$a->id, ['name' => 'Nouveau nom'])->assertSessionHas('statut');
+        $this->assertSame('Nouveau nom', $a->fresh()->name);
+    }
+
+    public function test_une_place_ajoutee_par_l_organisatrice_est_reprise_par_la_personne(): void
+    {
+        $mamie = $this->groupe->membres()->create(['name' => 'Mamie']);
+
+        $this->post('/s/'.$this->groupe->share_token, ['name' => 'mamie', 'magic_word' => 'tricot', 'wishes' => 'de la laine'])
+            ->assertRedirect('/s/'.$this->groupe->share_token)
+            ->assertCookie('santa_'.$this->groupe->id, $mamie->token);
+
+        $this->assertSame(1, $this->groupe->membres()->count());
+        $this->assertSame('de la laine', $mamie->fresh()->wishes);
+
+        // Une fois reprise, la place a un mot magique : plus personne ne la reprend.
+        $this->post('/s/'.$this->groupe->share_token, ['name' => 'Mamie', 'magic_word' => 'autre'])
+            ->assertSessionHasErrors('name');
+    }
+
+    public function test_on_ne_touche_pas_au_participant_d_un_autre_groupe(): void
+    {
+        $autre = $this->organisatrice->santaGroupes()->create(['name' => 'Autre']);
+        $etranger = $autre->membres()->create(['name' => 'Étranger']);
+
+        $this->actingAs($this->organisatrice)
+            ->delete('/secret-santa/'.$this->groupe->id.'/membres/'.$etranger->id)
+            ->assertNotFound();
+        $this->assertModelExists($etranger);
+    }
+
+    public function test_l_organisatrice_supprime_son_groupe_et_ses_participants(): void
+    {
+        [$a, $b] = $this->participants(4);
+        $this->exclure($a, $b);
+        app(TirageSecretSanta::class)->tirer($this->groupe);
+
+        $this->actingAs($this->organisatrice)
+            ->delete('/secret-santa/'.$this->groupe->id)
+            ->assertRedirect('/secret-santa')
+            ->assertSessionHas('statut');
+
+        $this->assertModelMissing($this->groupe);
+        $this->assertDatabaseCount('santa_members', 0);
+        $this->assertDatabaseCount('santa_exclusions', 0);
+        $this->get('/s/'.$this->groupe->share_token)->assertNotFound();
     }
 }
