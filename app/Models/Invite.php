@@ -10,7 +10,11 @@ class Invite extends Model
 {
     protected $table = 'guests';
 
-    protected $fillable = ['name', 'email'];
+    protected $fillable = ['name', 'email', 'magic_word', 'user_id'];
+
+    protected $hidden = ['magic_word'];
+
+    protected $casts = ['magic_word' => 'hashed'];
 
     protected static function booted(): void
     {

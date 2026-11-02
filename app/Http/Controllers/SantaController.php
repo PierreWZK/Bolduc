@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TirageFait;
 use App\Models\SantaGroupe;
 use App\Models\SantaMembre;
 use App\Services\TirageSecretSanta;
+use App\Support\MotMagique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use RuntimeException;
+use Throwable;
 
 class SantaController extends Controller
 {
@@ -70,6 +74,15 @@ class SantaController extends Controller
             return back()->withErrors(['tirage' => $erreur->getMessage()]);
         }
 
+        // Un mail qui échoue ne doit pas défaire le tirage : on le signale et on continue.
+        foreach ($groupe->membres()->whereNotNull('email')->get() as $membre) {
+            try {
+                Mail::to($membre->email)->send(new TirageFait($groupe, $membre));
+            } catch (Throwable $erreur) {
+                report($erreur);
+            }
+        }
+
         return back()->with('statut', 'Tirage fait ! Chacun découvre sa cible avec son lien. Toi, tu ne sais rien.');
     }
 
@@ -80,7 +93,11 @@ class SantaController extends Controller
         $membre = $this->membreDe($request, $groupe);
 
         if (! $membre) {
-            return view('santa.invite', ['groupe' => $groupe, 'membre' => null]);
+            return view('santa.invite', [
+                'groupe' => $groupe,
+                'membre' => null,
+                'noms' => $groupe->membres()->orderBy('name')->pluck('name'),
+            ]);
         }
 
         return view('santa.invite', [
@@ -97,13 +114,41 @@ class SantaController extends Controller
 
         $donnees = $request->validate([
             'name' => ['required', 'string', 'max:40'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'magic_word' => ['required', 'string', 'min:3', 'max:40'],
             'wishes' => ['nullable', 'string', 'max:240'],
         ]);
 
-        $membre = $groupe->membres()->create($donnees);
+        // Deux « Inès » dans le groupe, et plus personne ne sait qui retrouver.
+        if (MotMagique::prenomPris($groupe->membres()->pluck('name'), $donnees['name'])) {
+            return back()->withErrors(['name' => 'Ce prénom est déjà pris dans le groupe. Ajoute une initiale, ou retrouve-toi plus bas.'])
+                ->withInput($request->except('magic_word'));
+        }
+
+        $membre = $groupe->membres()->create([
+            ...$donnees,
+            'name' => trim($donnees['name']),
+            'magic_word' => MotMagique::normaliser($donnees['magic_word']),
+        ]);
         Cookie::queue(self::cookie($groupe), $membre->token, 60 * 24 * 30);
 
         return redirect()->route('santa.invite', $token);
+    }
+
+    // Depuis un autre appareil : son prénom dans la liste, et son mot magique.
+    public function retrouver(Request $request, string $token)
+    {
+        $groupe = SantaGroupe::where('share_token', $token)->firstOrFail();
+        $donnees = $request->validate(['nom' => ['required', 'string'], 'mot_magique' => ['required', 'string']]);
+        $membre = $groupe->membres()->where('name', $donnees['nom'])->first();
+
+        if (! $membre || ! MotMagique::verifie($membre->magic_word, $donnees['mot_magique'])) {
+            return back()->withErrors(['mot_magique' => 'Ce prénom et ce mot magique ne vont pas ensemble.'])->withInput($request->only('nom'));
+        }
+
+        Cookie::queue(self::cookie($groupe), $membre->token, 60 * 24 * 30);
+
+        return redirect()->route('santa.invite', $token)->with('statut', 'Re-bonjour '.$membre->name.' !');
     }
 
     private function membreDe(Request $request, SantaGroupe $groupe): ?SantaMembre

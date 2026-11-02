@@ -49,10 +49,12 @@ Route::middleware('auth')->group(function () {
 // Lien secret d'une liste, ouvert par les invités sans compte.
 Route::get('/l/{token}', [InviteController::class, 'show'])->name('invite');
 Route::post('/l/{token}/prenom', [InviteController::class, 'prenom'])->middleware('throttle:10,1')->name('invite.prenom');
+Route::post('/l/{token}/retrouver', [InviteController::class, 'retrouver'])->middleware('throttle:10,1')->name('invite.retrouver');
 
 // Lien d'invitation d'un Secret Santa : les participants n'ont pas de compte.
 Route::get('/s/{token}', [SantaController::class, 'invite'])->name('santa.invite');
 Route::post('/s/{token}', [SantaController::class, 'rejoindre'])->middleware('throttle:10,1')->name('santa.rejoindre');
+Route::post('/s/{token}/retrouver', [SantaController::class, 'retrouver'])->middleware('throttle:10,1')->name('santa.retrouver');
 
 // Mode soirée : les indices (écrits par le donneur) et les deux jeux, une fois le tirage fait.
 Route::get('/s/{token}/indices', [SoireeController::class, 'indices'])->name('santa.indices');
