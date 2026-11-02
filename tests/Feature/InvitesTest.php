@@ -59,13 +59,51 @@ class InvitesTest extends TestCase
 
         $this->get($lien)->assertOk()->assertSee('Ton prénom')->assertDontSee('Plaid en laine');
 
-        $reponse = $this->post($lien.'/prenom', ['name' => 'Inès'])->assertRedirect($lien);
+        $reponse = $this->post($lien.'/prenom', ['name' => 'Inès', 'magic_word' => 'Sapin'])->assertRedirect($lien);
         $invite = Invite::firstOrFail();
         $reponse->assertCookie($cookie, $invite->token);
 
         $this->withCookie($cookie, $invite->token)->get($lien)
             ->assertSee('Bonjour Inès')
             ->assertSee('Plaid en laine');
+    }
+
+    public function test_un_prenom_ne_se_prend_pas_deux_fois_sur_une_liste(): void
+    {
+        $this->liste->invites()->create(['name' => 'Inès', 'magic_word' => 'sapin']);
+
+        $this->post('/l/'.$this->liste->share_token.'/prenom', ['name' => 'inès', 'magic_word' => 'autre'])
+            ->assertSessionHasErrors('name');
+        $this->assertSame(1, $this->liste->invites()->count());
+    }
+
+    public function test_un_invite_se_retrouve_depuis_un_autre_appareil(): void
+    {
+        $ines = $this->liste->invites()->create(['name' => 'Inès', 'magic_word' => 'sapin']);
+        $lien = '/l/'.$this->liste->share_token;
+
+        $this->get($lien)->assertSee('Retrouve-toi')->assertSee('Inès');
+
+        $this->post($lien.'/retrouver', ['nom' => 'Inès', 'mot_magique' => 'raté'])
+            ->assertSessionHasErrors('mot_magique');
+
+        $this->post($lien.'/retrouver', ['nom' => 'Inès', 'mot_magique' => 'SAPIN'])
+            ->assertRedirect($lien)
+            ->assertCookie('invite_'.$this->liste->id, $ines->token);
+    }
+
+    public function test_un_invite_connecte_retrouve_la_liste_dans_listes_des_autres(): void
+    {
+        $leo = User::factory()->create(['name' => 'Léo']);
+        $lien = '/l/'.$this->liste->share_token;
+
+        $this->actingAs($leo)->post($lien.'/prenom', ['name' => 'Léo', 'magic_word' => 'sapin']);
+        $this->assertSame($leo->id, Invite::firstOrFail()->user_id);
+
+        $this->actingAs($leo)->get('/mes-listes')->assertSee('Listes des autres')->assertSee('Noël chez Camille');
+
+        // Autre appareil, sans cookie : le compte suffit.
+        $this->actingAs($leo)->get($lien)->assertSee('Bonjour Léo');
     }
 
     public function test_le_proprietaire_qui_ouvre_le_lien_reste_sur_sa_vue(): void

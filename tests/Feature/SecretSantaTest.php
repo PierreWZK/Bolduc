@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Mail\TirageFait;
 use App\Models\SantaGroupe;
 use App\Models\User;
 use App\Services\TirageSecretSanta;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -112,11 +114,52 @@ class SecretSantaTest extends TestCase
 
     public function test_un_participant_rejoint_avec_son_prenom(): void
     {
-        $this->post('/s/'.$this->groupe->share_token, ['name' => 'Inès', 'wishes' => 'un livre'])
+        $this->post('/s/'.$this->groupe->share_token, ['name' => 'Inès', 'email' => 'ines@exemple.test', 'magic_word' => 'Clémentine', 'wishes' => 'un livre'])
             ->assertRedirect('/s/'.$this->groupe->share_token)
             ->assertCookie('santa_'.$this->groupe->id);
 
-        $this->assertDatabaseHas('santa_members', ['group_id' => $this->groupe->id, 'name' => 'Inès']);
+        $this->assertDatabaseHas('santa_members', ['group_id' => $this->groupe->id, 'name' => 'Inès', 'email' => 'ines@exemple.test']);
+        // Le mot magique n'est jamais stocké en clair.
+        $this->assertDatabaseMissing('santa_members', ['magic_word' => 'clémentine']);
+    }
+
+    public function test_un_prenom_ne_se_prend_pas_deux_fois_meme_en_majuscules(): void
+    {
+        $this->groupe->membres()->create(['name' => 'Inès', 'magic_word' => 'sapin']);
+
+        $this->post('/s/'.$this->groupe->share_token, ['name' => ' INÈS ', 'magic_word' => 'autre'])
+            ->assertSessionHasErrors('name');
+        $this->assertSame(1, $this->groupe->membres()->count());
+    }
+
+    public function test_on_se_retrouve_depuis_un_autre_appareil_avec_son_mot_magique(): void
+    {
+        $ines = $this->groupe->membres()->create(['name' => 'Inès', 'magic_word' => 'sapin']);
+        $lien = '/s/'.$this->groupe->share_token;
+
+        // La liste des prénoms s'affiche pour se retrouver.
+        $this->get($lien)->assertSee('Retrouve-toi')->assertSee('Inès');
+
+        $this->post($lien.'/retrouver', ['nom' => 'Inès', 'mot_magique' => 'Mauvais'])
+            ->assertSessionHasErrors('mot_magique')
+            ->assertCookieMissing('santa_'.$this->groupe->id);
+
+        // Majuscules et espaces autour ne comptent pas.
+        $this->post($lien.'/retrouver', ['nom' => 'Inès', 'mot_magique' => ' SAPIN '])
+            ->assertRedirect($lien)
+            ->assertCookie('santa_'.$this->groupe->id, $ines->token);
+    }
+
+    public function test_le_tirage_previent_par_mail_ceux_qui_ont_laisse_leur_adresse(): void
+    {
+        Mail::fake();
+        [$a] = $this->participants(3);
+        $a->forceFill(['email' => 'a@exemple.test'])->save();
+
+        $this->actingAs($this->organisatrice)->post(route('santa.tirer', $this->groupe));
+
+        Mail::assertSent(TirageFait::class, 1);
+        Mail::assertSent(TirageFait::class, fn ($mail) => $mail->hasTo('a@exemple.test'));
     }
 
     public function test_on_ne_rejoint_pas_apres_le_tirage(): void
@@ -124,7 +167,7 @@ class SecretSantaTest extends TestCase
         $this->participants(3);
         app(TirageSecretSanta::class)->tirer($this->groupe);
 
-        $this->post('/s/'.$this->groupe->share_token, ['name' => 'Tard'])->assertForbidden();
+        $this->post('/s/'.$this->groupe->share_token, ['name' => 'Tard', 'magic_word' => 'trop tard'])->assertForbidden();
         $this->assertDatabaseMissing('santa_members', ['name' => 'Tard']);
     }
 

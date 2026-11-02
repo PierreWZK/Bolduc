@@ -16,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Comme un mot de passe : jamais remis dans le formulaire ni gardé en session après une erreur.
+        $exceptions->dontFlash(['magic_word', 'mot_magique']);
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );

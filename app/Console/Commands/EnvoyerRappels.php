@@ -20,6 +20,7 @@ class EnvoyerRappels extends Command
         Liste::query()
             ->whereDate('event_date', now()->addDays(7)->toDateString())
             ->whereNull('reminder_sent_at')
+            ->whereNull('archived_at')
             ->with(['cadeaux.reservations', 'cadeaux.contributions', 'invites'])
             ->each(function (Liste $liste) use (&$envoyes) {
                 // Un cadeau est libre tant qu'il n'est ni réservé ni entièrement financé.

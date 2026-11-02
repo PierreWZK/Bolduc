@@ -25,18 +25,16 @@
             <button type="button" class="bouton bouton-encre bouton-mini" @click="navigator.clipboard.writeText(@js($partage)); copie = true" x-text="copie ? 'Copié' : 'Copier le résultat'">Copier le résultat</button>
         </div>
     @else
-        <form wire:submit="deviner" class="formulaire">
-            <div class="champ">
-                <label for="choix-paquet">Qu'est-ce qu'il y a dedans ?</label>
-                <input id="choix-paquet" type="text" list="objets-paquet" wire:model="choix" autocomplete="off" placeholder="Commence à taper…">
-                <datalist id="objets-paquet">
-                    @foreach ($objets as $nom)
-                        <option value="{{ $nom }}"></option>
-                    @endforeach
-                </datalist>
-                @error('choix') <small class="message">{{ $message }}</small> @enderror
-            </div>
-            <button type="submit" class="bouton bouton-plein">Deviner</button>
-        </form>
+        {{-- Pas de <datalist> : Safari sur iPhone ne l'affiche pas. Liste filtrée maison, un bouton par objet. --}}
+        <div class="champ" x-data="{ q: '', noms: @js($objets), get trouves() { const t = this.q.trim().toLowerCase(); return t ? this.noms.filter(n => n.toLowerCase().includes(t)) : this.noms } }">
+            <label for="choix-paquet">Qu'est-ce qu'il y a dedans ?</label>
+            <input id="choix-paquet" type="search" x-model="q" autocomplete="off" placeholder="Filtrer : bougie, casque…">
+            <ul class="jeu-choix">
+                <template x-for="nom in trouves" :key="nom">
+                    <li><button type="button" class="bouton bouton-contour bouton-mini" @click="$wire.$set('choix', nom, false); $wire.deviner()" x-text="nom"></button></li>
+                </template>
+            </ul>
+            @error('choix') <small class="message">{{ $message }}</small> @enderror
+        </div>
     @endif
 </div>

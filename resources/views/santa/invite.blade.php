@@ -17,6 +17,8 @@
                     <form method="POST" action="{{ route('santa.rejoindre', $groupe->share_token) }}" class="formulaire" novalidate>
                         @csrf
                         <x-champ nom="name" libelle="Ton prénom" autocomplete="given-name" required autofocus />
+                        <x-champ nom="email" libelle="Ton e-mail (facultatif)" type="email" autocomplete="email" aide="Pour être prévenu quand le tirage est fait." />
+                        <x-champ nom="magic_word" libelle="Ton mot magique" type="password" autocomplete="new-password" aide="Un petit mot à toi, pour te retrouver depuis un autre appareil." required />
                         <div class="champ">
                             <label for="wishes">Tes envies (facultatif)</label>
                             <textarea id="wishes" name="wishes" rows="3" maxlength="240" placeholder="Un livre, une plante, un thé…"></textarea>
@@ -25,6 +27,9 @@
                     </form>
                 @endif
             </div>
+            @if ($noms->isNotEmpty())
+                <x-retrouver :action="route('santa.retrouver', $groupe->share_token)" :noms="$noms" />
+            @endif
         @elseif (! $groupe->estTire())
             <div class="carte santa-attente">
                 <h2 class="h3">Tu es dans la boucle, <em>{{ $membre->name }} !</em></h2>

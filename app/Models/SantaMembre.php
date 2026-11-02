@@ -12,7 +12,11 @@ class SantaMembre extends Model
 {
     protected $table = 'santa_members';
 
-    protected $fillable = ['name', 'wishes'];
+    protected $fillable = ['name', 'wishes', 'email', 'magic_word'];
+
+    protected $hidden = ['magic_word'];
+
+    protected $casts = ['magic_word' => 'hashed'];
 
     protected static function booted(): void
     {
