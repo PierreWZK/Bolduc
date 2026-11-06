@@ -69,6 +69,7 @@
         @if ($groupe->estTire())
             <div class="carte santa-tire">
                 <p><strong>Le tirage a eu lieu.</strong> Tu ne vois pas qui tire qui : chacun découvre sa cible avec son lien.</p>
+                <p><a class="bouton bouton-plein" href="{{ route('santa.soiree', $groupe) }}">Lancer le mode soirée</a></p>
             </div>
         @else
             <div class="carte ajout-cadeau">
