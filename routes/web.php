@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/secret-santa/{groupe}/exclusions', [SantaController::class, 'retirerExclusion'])->name('santa.exclusions.retirer');
     Route::post('/secret-santa/{groupe}/tirage', [SantaController::class, 'tirer'])->name('santa.tirer');
     Route::delete('/secret-santa/{groupe}', [SantaController::class, 'destroy'])->name('santa.destroy');
+    // Mode soirée : réservé à l'organisatrice, les participants ne le voient jamais.
+    Route::get('/secret-santa/{groupe}/soiree', [SoireeController::class, 'organisatrice'])->name('santa.soiree');
     Route::scopeBindings()->group(function () {
         Route::post('/secret-santa/{groupe}/membres', [SantaController::class, 'ajouterMembre'])->name('santa.membres.ajouter');
         Route::put('/secret-santa/{groupe}/membres/{membre}', [SantaController::class, 'renommerMembre'])->name('santa.membres.renommer');
@@ -67,7 +69,6 @@ Route::post('/s/{token}/retrouver',[SantaController::class, 'retrouver'])->middl
 // Mode soirée : les indices (écrits par le donneur) et les deux jeux, une fois le tirage fait.
 Route::get('/s/{token}/indices', [SoireeController::class, 'indices'])->name('santa.indices');
 Route::post('/s/{token}/indices', [SoireeController::class, 'sauverIndices'])->name('santa.indices.sauver');
-Route::get('/s/{token}/soiree', [SoireeController::class, 'soiree'])->name('santa.soiree');
 
 Route::get('/idees', [IdeeController::class, 'index'])->name('idees');
 Route::get('/l/{token}/idees', [IdeeController::class, 'index'])->name('invite.idees');

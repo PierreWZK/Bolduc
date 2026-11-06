@@ -65,8 +65,8 @@
         @if ($membre && $groupe->estTire())
             <div class="carte santa-attente">
                 <p class="surtitre">Mode soirée</p>
-                <p>Le jour de la fête, on devine qui a offert quoi. Remplis tes indices avant : un emoji, un surnom, une phrase, et trois indices sur ton cadeau.</p>
-                <p><a class="bouton bouton-encre" href="{{ route('santa.indices', $groupe->share_token) }}">Écrire mes indices</a> <a class="bouton bouton-plein" href="{{ route('santa.soiree', $groupe->share_token) }}">Jouer</a></p>
+                <p>Le jour de la fête, l'organisatrice fait deviner les indices de chacun. Remplis les tiens avant : un emoji, un surnom, une phrase, et trois indices sur ton cadeau.</p>
+                <p><a class="bouton bouton-encre" href="{{ route('santa.indices', $groupe->share_token) }}">Écrire mes indices</a></p>
             </div>
         @endif
     </section>

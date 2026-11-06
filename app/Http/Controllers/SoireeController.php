@@ -37,14 +37,16 @@ class SoireeController extends Controller
             $membre->indices()->updateOrCreate(['kind' => $kind], ['value' => $value]);
         }
 
-        return redirect()->route('santa.soiree', $token)->with('statut', 'Tes indices sont notés.');
+        return redirect()->route('santa.invite', $token)->with('statut', 'Tes indices sont notés.');
     }
 
-    public function soiree(Request $request, string $token)
+    // L'organisatrice seule : le jeu tourne sur son écran, les participants ne savent pas qui les tire.
+    public function organisatrice(Request $request, SantaGroupe $groupe)
     {
-        [$groupe, $membre] = $this->joueur($request, $token);
+        abort_unless($groupe->user_id === $request->user()->id, 404);
+        abort_unless($groupe->estTire(), 403, 'Le tirage n\'a pas encore eu lieu.');
 
-        return view('soiree.show', compact('groupe', 'membre'));
+        return view('soiree.organisatrice', ['groupe' => $groupe]);
     }
 
     // Seul un participant du groupe, identifié par son cookie, peut jouer ou écrire.

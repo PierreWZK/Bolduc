@@ -251,6 +251,10 @@ a { color: inherit; }
 .idee form { margin-top: auto; padding-top: 8px; }
 .idee-ajout { display: grid; gap: 10px; width: 100%; }
 .idee-ajout select { min-height: 44px; padding: 0 16px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; }
+.soiree-indices { display: grid; gap: 14px; margin: 24px 0; padding: 0; list-style: none; }
+.soiree-indice { font-size: clamp(30px, 7vw, 52px); line-height: 1.15; font-weight: 700; color: var(--encre); }
+.soiree-choix { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.soiree-bouton { min-height: 52px; font-size: 18px; }
 
 /* Comptes et formulaires */
 .entete-liens { display: flex; align-items: center; gap: 20px; }
