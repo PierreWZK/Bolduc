@@ -37,6 +37,8 @@ class RappelsEtRemerciementsTest extends TestCase
 
         Mail::assertSent(RappelListe::class, 1);
         Mail::assertSent(RappelListe::class, fn (RappelListe $m) => $m->hasTo('ines@exemple.test') && $m->libres === 1);
+        // Mail::fake n'affiche pas le mail : on vérifie qu'il se rend vraiment.
+        Mail::assertSent(RappelListe::class, fn (RappelListe $m) => str_contains($m->render(), 'Inès'));
 
         // Lancer la commande deux fois le même jour n'envoie pas deux fois.
         $this->artisan('bolduc:rappels');

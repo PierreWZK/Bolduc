@@ -28,8 +28,11 @@ class TirageFait extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.tirage',
-            with: ['lien' => route('santa.invite', $this->groupe->share_token)],
+            markdown: 'emails.tirage',
+            with: [
+                'lien' => route('santa.invite', $this->groupe->share_token),
+                'indices' => route('santa.indices', $this->groupe->share_token),
+            ],
         );
     }
 }

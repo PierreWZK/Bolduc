@@ -28,7 +28,7 @@ class RappelListe extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.rappel',
+            markdown: 'emails.rappel',
             with: ['lien' => route('invite', $this->liste->share_token)],
         );
     }

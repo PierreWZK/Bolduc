@@ -65,6 +65,25 @@ class SantaController extends Controller
         return back()->with('statut', 'Exclusion ajoutée.');
     }
 
+    public function retirerExclusion(Request $request, SantaGroupe $groupe)
+    {
+        abort_unless($groupe->user_id === $request->user()->id, 404);
+        abort_if($groupe->estTire(), 403, 'Le tirage a déjà eu lieu.');
+
+        $donnees = $request->validate([
+            'membre' => ['required', 'integer'],
+            'exclu' => ['required', 'integer'],
+        ]);
+        $paire = [(int) $donnees['membre'], (int) $donnees['exclu']];
+
+        $ids = $groupe->membres()->pluck('id')->all();
+        abort_unless(! array_diff($paire, $ids), 404);
+
+        DB::table('santa_exclusions')->whereIn('member_id', $paire)->whereIn('excluded_id', $paire)->delete();
+
+        return back()->with('statut', 'Exclusion retirée.');
+    }
+
     public function tirer(Request $request, SantaGroupe $groupe, TirageSecretSanta $tirage)
     {
         abort_unless($groupe->user_id === $request->user()->id, 404);
@@ -169,7 +188,7 @@ class SantaController extends Controller
             'name' => ['required', 'string', 'max:40'],
             'email' => ['nullable', 'email', 'max:255'],
             'magic_word' => ['required', 'string', 'min:3', 'max:40'],
-            'wishes' => ['nullable', 'string', 'max:240'],
+            'wishes' => ['nullable', 'string', 'max:500'],
         ]);
 
         // Une place réservée par l'organisatrice (pas encore de mot magique) : la personne la reprend.
@@ -200,6 +219,18 @@ class SantaController extends Controller
         Cookie::queue(self::cookie($groupe), $membre->token, 60 * 24 * 30);
 
         return redirect()->route('santa.invite', $token);
+    }
+
+    // Envies et petit mot : modifiables à tout moment, même après le tirage.
+    public function envies(Request $request, string $token)
+    {
+        $groupe = SantaGroupe::where('share_token', $token)->firstOrFail();
+        $membre = $this->membreDe($request, $groupe);
+        abort_unless($membre, 403, 'Rejoins le Secret Santa avant d\'écrire tes envies.');
+
+        $membre->update($request->validate(['wishes' => ['nullable', 'string', 'max:500']]));
+
+        return redirect()->route('santa.invite', $token)->with('statut', 'Ton petit mot est noté.');
     }
 
     // Depuis un autre appareil : son prénom dans la liste, et son mot magique.

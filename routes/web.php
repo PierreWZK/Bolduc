@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/secret-santa', [SantaController::class, 'store'])->name('santa.store');
     Route::get('/secret-santa/{groupe}', [SantaController::class, 'show'])->name('santa.show');
     Route::post('/secret-santa/{groupe}/exclusions', [SantaController::class, 'exclure'])->name('santa.exclure');
+    Route::delete('/secret-santa/{groupe}/exclusions', [SantaController::class, 'retirerExclusion'])->name('santa.exclusions.retirer');
     Route::post('/secret-santa/{groupe}/tirage', [SantaController::class, 'tirer'])->name('santa.tirer');
     Route::delete('/secret-santa/{groupe}', [SantaController::class, 'destroy'])->name('santa.destroy');
     Route::scopeBindings()->group(function () {
@@ -60,7 +61,8 @@ Route::post('/l/{token}/retrouver', [InviteController::class, 'retrouver'])->mid
 // Lien d'invitation d'un Secret Santa : les participants n'ont pas de compte.
 Route::get('/s/{token}', [SantaController::class, 'invite'])->name('santa.invite');
 Route::post('/s/{token}', [SantaController::class, 'rejoindre'])->middleware('throttle:10,1')->name('santa.rejoindre');
-Route::post('/s/{token}/retrouver', [SantaController::class, 'retrouver'])->middleware('throttle:10,1')->name('santa.retrouver');
+Route::post('/s/{token}/envies', [SantaController::class, 'envies'])->middleware('throttle:10,1')->name('santa.envies');
+Route::post('/s/{token}/retrouver',[SantaController::class, 'retrouver'])->middleware('throttle:10,1')->name('santa.retrouver');
 
 // Mode soirée : les indices (écrits par le donneur) et les deux jeux, une fois le tirage fait.
 Route::get('/s/{token}/indices', [SoireeController::class, 'indices'])->name('santa.indices');

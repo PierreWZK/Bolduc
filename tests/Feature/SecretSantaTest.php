@@ -162,6 +162,48 @@ class SecretSantaTest extends TestCase
         Mail::assertSent(TirageFait::class, fn ($mail) => $mail->hasTo('a@exemple.test'));
     }
 
+    public function test_le_mail_du_tirage_invite_au_petit_mot_et_aux_indices(): void
+    {
+        [$a] = $this->participants(3);
+
+        (new TirageFait($this->groupe, $a))
+            ->assertSeeInHtml("Découvrir à qui j'offre", false)
+            ->assertSeeInHtml('petit mot')
+            ->assertSeeInHtml(route('santa.indices', $this->groupe->share_token));
+    }
+
+    public function test_un_participant_ecrit_son_petit_mot_meme_apres_le_tirage(): void
+    {
+        [$ines] = $this->participants(3);
+        app(TirageSecretSanta::class)->tirer($this->groupe);
+        $lien = '/s/'.$this->groupe->share_token;
+
+        // Sans être reconnu, personne n'écrit à sa place.
+        $this->post($lien.'/envies', ['wishes' => 'pirate'])->assertForbidden();
+
+        $this->withCookie('santa_'.$this->groupe->id, $ines->token)
+            ->post($lien.'/envies', ['wishes' => 'Du thé et un roman policier'])
+            ->assertRedirect($lien);
+        $this->assertSame('Du thé et un roman policier', $ines->fresh()->wishes);
+
+        $this->withCookie('santa_'.$this->groupe->id, $ines->token)->get($lien)
+            ->assertSee('Ton petit mot')
+            ->assertSee('Du thé et un roman policier');
+    }
+
+    public function test_l_organisatrice_retire_une_exclusion(): void
+    {
+        [$a, $b] = $this->participants(3);
+        $this->exclure($a, $b);
+
+        $this->actingAs($this->organisatrice)->get('/secret-santa/'.$this->groupe->id)->assertSee($a->name.' et '.$b->name);
+
+        $this->actingAs($this->organisatrice)
+            ->delete('/secret-santa/'.$this->groupe->id.'/exclusions', ['membre' => $a->id, 'exclu' => $b->id])
+            ->assertSessionHas('statut');
+        $this->assertDatabaseCount('santa_exclusions', 0);
+    }
+
     public function test_on_ne_rejoint_pas_apres_le_tirage(): void
     {
         $this->participants(3);

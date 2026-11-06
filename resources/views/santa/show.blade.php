@@ -74,6 +74,22 @@
             <div class="carte ajout-cadeau">
                 <h2 class="h3">Ne pas tirer ensemble</h2>
                 <p class="legende">Un couple, des colocataires… Les exclus ne se tirent pas, dans aucun sens.</p>
+                @php
+                    // Chaque exclusion est stockée dans les deux sens : on n'affiche la paire qu'une fois.
+                    $paires = $groupe->membres->flatMap(fn ($m) => $m->exclus->where('id', '>', $m->id)->map(fn ($e) => [$m, $e]));
+                @endphp
+                @foreach ($paires as [$a, $b])
+                    <div class="liste-actions">
+                        <span>{{ $a->name }} et {{ $b->name }}</span>
+                        <form method="POST" action="{{ route('santa.exclusions.retirer', $groupe) }}">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="membre" value="{{ $a->id }}">
+                            <input type="hidden" name="exclu" value="{{ $b->id }}">
+                            <button type="submit" class="lien">Retirer</button>
+                        </form>
+                    </div>
+                @endforeach
                 @if ($groupe->membres->count() >= 2)
                     <form method="POST" action="{{ route('santa.exclure', $groupe) }}" class="formulaire">
                         @csrf
