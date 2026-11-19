@@ -79,6 +79,21 @@ class RappelsEtRemerciementsTest extends TestCase
         $this->assertFalse($cadeau->fresh()->thanked);
     }
 
+    public function test_apres_la_date_les_parts_restent_secretes_pour_le_createur(): void
+    {
+        $this->liste->update(['event_date' => now()->subDay()->toDateString()]);
+        $ines = $this->liste->invites()->create(['name' => 'Inès']);
+        $casque = $this->liste->cadeaux()->create(['title' => 'Casque', 'price' => 120, 'quantity' => 1]);
+        $casque->contributions()->create(['guest_id' => $ines->id, 'amount' => 80]);
+
+        $this->actingAs($this->camille)
+            ->get('/mes-listes/'.$this->liste->id)
+            ->assertOk()
+            ->assertSee('Financé à plusieurs')
+            ->assertDontSee('Inès')
+            ->assertDontSee('80,00');
+    }
+
     public function test_apres_la_date_les_remerciements_montrent_qui_a_offert_quoi(): void
     {
         $this->liste->update(['event_date' => now()->subDay()->toDateString()]);

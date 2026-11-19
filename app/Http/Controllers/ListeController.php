@@ -118,7 +118,7 @@ class ListeController extends Controller
                     }
                 },
                 'cadeaux.reservations.invite',
-                'cadeaux.contributions.invite',
+                'cadeaux.contributions',
                 'cadeaux.ajouteePar',
             ]),
         ]);

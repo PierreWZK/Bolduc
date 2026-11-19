@@ -37,10 +37,7 @@
             <p class="legende">La date est passée : voici qui a offert quoi. Coche « merci envoyé » une fois fait.</p>
 
             @forelse ($liste->cadeaux as $cadeau)
-                @php
-                    $donneurs = $cadeau->reservations->pluck('invite.name')
-                        ->merge($cadeau->contributions->map(fn ($part) => $part->invite?->name.' ('.number_format((float) $part->amount, 2, ',', ' ').' €)'));
-                @endphp
+                @php $donneurs = $cadeau->reservations->pluck('invite.name'); @endphp
                 <article class="cadeau-fiche">
                     <div class="cadeau-texte">
                         <strong>{{ $cadeau->title }}</strong>
@@ -49,6 +46,8 @@
                                 Idée de {{ $cadeau->ajouteePar?->name }}, en secret
                             @elseif ($donneurs->isNotEmpty())
                                 Offert par {{ $donneurs->join(', ') }}
+                            @elseif ($cadeau->contributions->isNotEmpty())
+                                Financé à plusieurs, les noms restent entre invités
                             @else
                                 Personne ne l'a réservé
                             @endif
