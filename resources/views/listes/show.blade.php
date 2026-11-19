@@ -94,6 +94,43 @@
                     <span class="pastille pastille-encre">À plusieurs</span>
                 @endif
 
+                <details class="cadeau-edition">
+                    <summary class="lien">Modifier</summary>
+                    <form method="POST" action="{{ route('cadeaux.update', [$liste, $cadeau]) }}" class="formulaire">
+                        @csrf
+                        @method('PUT')
+                        <div class="champ">
+                            <label for="titre-{{ $cadeau->id }}">Titre</label>
+                            <input id="titre-{{ $cadeau->id }}" type="text" name="title" value="{{ $cadeau->title }}" maxlength="120" required>
+                        </div>
+                        <div class="champ">
+                            <label for="url-{{ $cadeau->id }}">Lien de la boutique</label>
+                            <input id="url-{{ $cadeau->id }}" type="url" name="url" value="{{ $cadeau->url }}">
+                        </div>
+                        <div class="ajout-ligne">
+                            <div class="champ">
+                                <label for="prix-{{ $cadeau->id }}">Prix (€)</label>
+                                <input id="prix-{{ $cadeau->id }}" type="number" name="price" value="{{ $cadeau->price }}" step="0.01" min="0">
+                            </div>
+                            <div class="champ">
+                                <label for="quantite-{{ $cadeau->id }}">Quantité</label>
+                                <input id="quantite-{{ $cadeau->id }}" type="number" name="quantity" value="{{ $cadeau->quantity }}" min="{{ max(1, $cadeau->unitesPrises()) }}" max="99" required>
+                            </div>
+                        </div>
+                        <div class="champ">
+                            <label for="note-{{ $cadeau->id }}">Une précision (taille, couleur…)</label>
+                            <input id="note-{{ $cadeau->id }}" type="text" name="note" value="{{ $cadeau->note }}" maxlength="120">
+                        </div>
+                        <label class="coeur">
+                            <input type="checkbox" name="favorite" value="1" @checked($cadeau->favorite)>
+                            Coup de cœur
+                        </label>
+                        @error('quantity', 'modification-'.$cadeau->id)
+                            <p class="erreur">{{ $message }}</p>
+                        @enderror
+                        <button type="submit" class="bouton bouton-encre bouton-mini">Enregistrer</button>
+                    </form>
+                </details>
                 <form method="POST" action="{{ route('cadeaux.destroy', [$liste, $cadeau]) }}">
                     @csrf
                     @method('DELETE')

@@ -51,6 +51,37 @@ class CadeauController extends Controller
         return back()->with('statut', 'Cadeau ajouté à ta liste.');
     }
 
+    public function update(Request $request, Liste $liste, Cadeau $cadeau)
+    {
+        abort_unless($liste->estProprietaire($request->user()), 404);
+        abort_unless($cadeau->list_id === $liste->id, 404);
+
+        $donnees = $request->validate([
+            'url' => ['nullable', 'url:http,https', 'max:2048'],
+            'title' => ['required', 'string', 'max:120'],
+            'price' => ['nullable', 'numeric', 'min:0', 'max:99999'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
+            'note' => ['nullable', 'string', 'max:120'],
+            'favorite' => ['nullable', 'boolean'],
+        ]);
+
+        // On ne baisse pas la quantité sous ce que les invités ont déjà pris.
+        if ($donnees['quantity'] < $cadeau->unitesPrises()) {
+            return back()->withErrors(['quantity' => 'Déjà '.$cadeau->unitesPrises().' pris : la quantité ne peut pas descendre en dessous.'], 'modification-'.$cadeau->id)->withInput();
+        }
+
+        $cadeau->update([
+            'title' => $donnees['title'],
+            'url' => $donnees['url'] ?? null,
+            'price' => $donnees['price'] ?? null,
+            'quantity' => $donnees['quantity'],
+            'note' => $donnees['note'] ?? null,
+            'favorite' => $request->boolean('favorite'),
+        ]);
+
+        return back()->with('statut', 'Cadeau modifié.');
+    }
+
     // Case « merci envoyé » : seulement une fois la date passée, quand les remerciements s'ouvrent.
     public function merci(Request $request, Liste $liste, Cadeau $cadeau)
     {
