@@ -31,6 +31,7 @@ return [
     'gemini' => [
         'key' => env('GEMINI_API_KEY'),
         'model' => env('GEMINI_MODEL', 'gemini-2.5-flash'),
+        'quota_jour' => (int) env('GEMINI_QUOTA_JOUR', 200),
     ],
 
     'slack' => [

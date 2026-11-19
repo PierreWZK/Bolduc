@@ -31,6 +31,10 @@ class InviteController extends Controller
     {
         $liste = Liste::where('share_token', $token)->firstOrFail();
 
+        if (filled($request->input('site_web'))) {
+            return back();
+        }
+
         $donnees = $request->validate([
             'name' => ['required', 'string', 'max:40'],
             'email' => ['nullable', 'email', 'max:255'],

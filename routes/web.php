@@ -72,6 +72,7 @@ Route::get('/s/{token}/indices', [SoireeController::class, 'indices'])->name('sa
 Route::post('/s/{token}/indices', [SoireeController::class, 'sauverIndices'])->name('santa.indices.sauver');
 
 Route::get('/idees', [IdeeController::class, 'index'])->name('idees');
+Route::post('/idees/assistant', [IdeeController::class, 'assistant'])->middleware('throttle:10,1')->name('idees.assistant');
 Route::get('/l/{token}/idees', [IdeeController::class, 'index'])->name('invite.idees');
 Route::post('/l/{token}/idees/{idee}', [IdeeController::class, 'ajouterEnSecret'])->name('invite.idees.ajouter');
 
