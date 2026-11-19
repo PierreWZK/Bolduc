@@ -44,7 +44,12 @@
         <div class="idees">
             @forelse ($idees as $idee)
                 <article class="carte idee">
-                    <span class="rond teinte-or"><x-icone :nom="$idee->icon" /></span>
+                    @if ($idee->image)
+                        <img src="{{ asset($idee->image) }}" alt="" loading="lazy" width="400" height="300" class="idee-photo">
+                        <p class="idee-credit">{{ $idee->credit }}</p>
+                    @else
+                        <span class="rond teinte-or"><x-icone :nom="$idee->icon" /></span>
+                    @endif
                     <span class="pastille pastille-rose">{{ ucfirst($idee->category) }}</span>
                     <h2 class="h3">{{ $idee->title }}</h2>
                     <p>{{ $idee->description }}</p>

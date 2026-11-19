@@ -1,0 +1,1490 @@
+[
+  {
+    "title": "Vase en grès émaillé",
+    "description": "Une pièce qui vit longtemps sur une étagère, à remplir de fleurs ou de branches.",
+    "category": "maison",
+    "icon": "maison",
+    "price": 35,
+    "events": [
+      "noel",
+      "cremaillere",
+      "anniversaire"
+    ],
+    "requete": "ceramic vase",
+    "image": "images/idees/vase-en-gres-emaille.jpg",
+    "credit": "Mpb eu · CC BY-SA 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Plaid en laine",
+    "description": "Doux, chaud, à poser sur le canapé pour les soirées froides.",
+    "category": "maison",
+    "icon": "plaid",
+    "price": 59,
+    "events": [
+      "noel",
+      "cremaillere",
+      "naissance"
+    ],
+    "requete": "wool blanket",
+    "image": "images/idees/plaid-en-laine.jpg",
+    "credit": "Onehunga Woollen Mills · CC BY 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Bougies parfumées",
+    "description": "Un lot de trois, en cire de soja, pour les hivers longs.",
+    "category": "maison",
+    "icon": "lampe",
+    "price": 24,
+    "events": [
+      "noel",
+      "cremaillere",
+      "mariage"
+    ],
+    "requete": "scented candles",
+    "image": "images/idees/bougies-parfumees.jpg",
+    "credit": "W.carter · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Plante verte",
+    "description": "Une monstera ou un pothos : facile à garder, joli partout.",
+    "category": "maison",
+    "icon": "plante",
+    "price": 32,
+    "events": [
+      "cremaillere",
+      "anniversaire",
+      "mariage"
+    ],
+    "requete": "monstera plant",
+    "image": "images/idees/plante-verte.jpg",
+    "credit": "auteur inconnu · CC BY-SA 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Service de verres à vin",
+    "description": "Six verres en cristal, pour les dîners qui s’allongent.",
+    "category": "maison",
+    "icon": "verre",
+    "price": 64,
+    "events": [
+      "mariage",
+      "noel",
+      "cremaillere"
+    ],
+    "requete": "wine glasses",
+    "image": "images/idees/service-de-verres-a-vin.jpg",
+    "credit": "Jon Sullivan · Public domain · Wikimedia Commons"
+  },
+  {
+    "title": "Lampe de chevet",
+    "description": "Une lumière douce pour lire au lit, sans éblouir.",
+    "category": "maison",
+    "icon": "lampe",
+    "price": 49,
+    "events": [
+      "cremaillere",
+      "mariage",
+      "anniversaire"
+    ],
+    "requete": "bedside lamp",
+    "image": "images/idees/lampe-de-chevet.jpg",
+    "credit": "Another one of my pictures:\n\n\n\nThis photograph was taken by Medium69 (William Crochot) and released under the license stated below. You are free to us · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Diffuseur d’huiles essentielles",
+    "description": "Une brume parfumée qui transforme une pièce en quelques minutes.",
+    "category": "maison",
+    "icon": "melange",
+    "price": 39,
+    "events": [
+      "noel",
+      "cremaillere",
+      "anniversaire"
+    ],
+    "requete": "essential oil diffuser",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Coussin en lin",
+    "description": "Un coussin naturel à glisser dans le canapé ou le fauteuil.",
+    "category": "maison",
+    "icon": "plaid",
+    "price": 29,
+    "events": [
+      "cremaillere",
+      "mariage",
+      "anniversaire"
+    ],
+    "requete": "linen cushion",
+    "image": "images/idees/coussin-en-lin.jpg",
+    "credit": "FabdivineArt · CC BY 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Miroir rond doré",
+    "description": "Il agrandit l’entrée et fait entrer la lumière.",
+    "category": "maison",
+    "icon": "maison",
+    "price": 58,
+    "events": [
+      "cremaillere",
+      "mariage",
+      "anniversaire"
+    ],
+    "requete": "round gold mirror",
+    "image": "images/idees/miroir-rond-dore.jpg",
+    "credit": "Playing Futures:  Applied Nomadology · CC BY 2.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Horloge murale",
+    "description": "Un design sobre qui tient sa place dans la cuisine ou le salon.",
+    "category": "maison",
+    "icon": "maison",
+    "price": 42,
+    "events": [
+      "cremaillere",
+      "mariage",
+      "noel"
+    ],
+    "requete": "wall clock",
+    "image": "images/idees/horloge-murale.jpg",
+    "credit": "Christoph Braun · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Tapis en jute",
+    "description": "Naturel et résistant, il réchauffe un parquet froid.",
+    "category": "maison",
+    "icon": "maison",
+    "price": 79,
+    "events": [
+      "cremaillere",
+      "mariage",
+      "noel"
+    ],
+    "requete": "jute rug",
+    "image": "images/idees/tapis-en-jute.jpg",
+    "credit": "Ayyoubsabawiki · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Cadre photo en bois",
+    "description": "Pour exposer la photo qu’on aime le plus, sans attendre.",
+    "category": "maison",
+    "icon": "maison",
+    "price": 22,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "noel"
+    ],
+    "requete": "wooden photo frame",
+    "image": "images/idees/cadre-photo-en-bois.jpg",
+    "credit": "Calistemon · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Théière en fonte",
+    "description": "Pour infuser longtemps et garder le thé chaud à table.",
+    "category": "maison",
+    "icon": "tasse",
+    "price": 45,
+    "events": [
+      "noel",
+      "cremaillere",
+      "anniversaire"
+    ],
+    "requete": "cast iron teapot",
+    "image": "images/idees/theiere-en-fonte.jpg",
+    "credit": "পাপৰি বৰা · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Cafetière à piston",
+    "description": "Un café plus rond, qu’on prépare en deux minutes le matin.",
+    "category": "maison",
+    "icon": "tasse",
+    "price": 36,
+    "events": [
+      "noel",
+      "cremaillere",
+      "anniversaire"
+    ],
+    "requete": "french press coffee",
+    "image": "images/idees/cafetiere-a-piston.jpg",
+    "credit": "Shisma · CC BY 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Set de table en lin",
+    "description": "Six sets pour dresser une table de fête avec peu d’efforts.",
+    "category": "maison",
+    "icon": "maison",
+    "price": 18,
+    "events": [
+      "noel",
+      "mariage",
+      "cremaillere"
+    ],
+    "requete": "linen placemats",
+    "image": "images/idees/set-de-table-en-lin.jpg",
+    "credit": "Rijksmuseum · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Guirlande lumineuse",
+    "description": "Des petites lumières chaudes pour un balcon, une chambre ou un sapin.",
+    "category": "maison",
+    "icon": "lampe",
+    "price": 19,
+    "events": [
+      "noel",
+      "mariage",
+      "anniversaire"
+    ],
+    "requete": "fairy lights",
+    "image": "images/idees/guirlande-lumineuse.jpg",
+    "credit": "Pierre Blaché from Paris, France · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Coffret de thés",
+    "description": "Une sélection de thés en vrac, de quoi découvrir sans se tromper.",
+    "category": "gourmandises",
+    "icon": "tasse",
+    "price": 28,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "tea assortment",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Chocolats artisanaux",
+    "description": "Une boîte de chocolats fabriqués en petite série.",
+    "category": "gourmandises",
+    "icon": "panier",
+    "price": 18,
+    "events": [
+      "noel",
+      "anniversaire",
+      "naissance"
+    ],
+    "requete": "artisan chocolates",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Panier de produits locaux",
+    "description": "Confitures, miel et biscuits d’un producteur de la région.",
+    "category": "gourmandises",
+    "icon": "panier",
+    "price": 45,
+    "events": [
+      "noel",
+      "cremaillere",
+      "autre"
+    ],
+    "requete": "jam and honey jars",
+    "image": "images/idees/panier-de-produits-locaux.jpg",
+    "credit": "Michal Osmenda · CC BY-SA 2.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Café en grains",
+    "description": "Des grains torréfiés récemment, pour une tasse qui a du goût.",
+    "category": "gourmandises",
+    "icon": "tasse",
+    "price": 22,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "coffee beans",
+    "image": "images/idees/cafe-en-grains.jpg",
+    "credit": "MarkSweep · Public domain · Wikimedia Commons"
+  },
+  {
+    "title": "Miel de montagne",
+    "description": "Un miel récolté en altitude, avec des saveurs de fleurs sauvages.",
+    "category": "gourmandises",
+    "icon": "panier",
+    "price": 15,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "honey jar",
+    "image": "images/idees/miel-de-montagne.jpg",
+    "credit": "Hayden Soloviev · CC BY 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Huile d’olive première pression",
+    "description": "Une bouteille à garder près du plan de travail et à goûter nature.",
+    "category": "gourmandises",
+    "icon": "panier",
+    "price": 19,
+    "events": [
+      "noel",
+      "cremaillere",
+      "autre"
+    ],
+    "requete": "olive oil bottle",
+    "image": "images/idees/huile-dolive-premiere-pression.jpg",
+    "credit": "Badagnani (talk) · CC BY 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Épices du monde",
+    "description": "Un coffret de quatre épices pour cuisiner autrement.",
+    "category": "gourmandises",
+    "icon": "panier",
+    "price": 25,
+    "events": [
+      "noel",
+      "cremaillere",
+      "anniversaire"
+    ],
+    "requete": "spices bowls",
+    "image": "images/idees/epices-du-monde.jpg",
+    "credit": "Mohamed Shadhir · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Sirop artisanal",
+    "description": "Pour les boissons de fête, sans alcool, avec des fruits frais.",
+    "category": "gourmandises",
+    "icon": "verre",
+    "price": 14,
+    "events": [
+      "anniversaire",
+      "cremaillere",
+      "autre"
+    ],
+    "requete": "syrup bottle",
+    "image": "images/idees/sirop-artisanal.jpg",
+    "credit": "Necatorina · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Macarons en coffret",
+    "description": "Une douzaine de macarons assortis, à partager ou à garder pour soi.",
+    "category": "gourmandises",
+    "icon": "panier",
+    "price": 20,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "naissance"
+    ],
+    "requete": "macarons",
+    "image": "images/idees/macarons-en-coffret.jpg",
+    "credit": "Benoît Prieur · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Biscuits en coffret",
+    "description": "Des biscuits faits maison, emballés comme un petit cadeau.",
+    "category": "gourmandises",
+    "icon": "panier",
+    "price": 16,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "butter cookies",
+    "image": "images/idees/biscuits-en-coffret.jpg",
+    "credit": "Constantin Barbu · CC BY 2.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Crémant de Bourgogne",
+    "description": "Une bouteille pour trinquer, à offrir pour une fête ou un dîner.",
+    "category": "gourmandises",
+    "icon": "verre",
+    "price": 18,
+    "events": [
+      "noel",
+      "mariage",
+      "cremaillere"
+    ],
+    "requete": "sparkling wine bottle",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Chocolat chaud en tablette",
+    "description": "De quoi préparer un chocolat chaud épais les soirs de pluie.",
+    "category": "gourmandises",
+    "icon": "tasse",
+    "price": 12,
+    "events": [
+      "noel",
+      "naissance",
+      "autre"
+    ],
+    "requete": "hot chocolate",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Carnet de recettes",
+    "description": "Un carnet à remplir à quatre mains, pour garder les plats de famille.",
+    "category": "loisirs",
+    "icon": "carnet",
+    "price": 24,
+    "events": [
+      "noel",
+      "mariage",
+      "anniversaire"
+    ],
+    "requete": "recipe book",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Livre illustré",
+    "description": "Un beau livre à offrir, à lire à voix haute ou à garder sur la table basse.",
+    "category": "loisirs",
+    "icon": "carnet",
+    "price": 22,
+    "events": [
+      "noel",
+      "naissance",
+      "anniversaire"
+    ],
+    "requete": "illustrated book",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Puzzle 1 000 pièces",
+    "description": "Une image à assembler sur plusieurs soirées, à deux ou seul.",
+    "category": "loisirs",
+    "icon": "puzzle",
+    "price": 19,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "jigsaw puzzle",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Vinyle de jazz",
+    "description": "Un disque d’un artiste aimé, ou à découvrir ensemble.",
+    "category": "loisirs",
+    "icon": "musique",
+    "price": 28,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "jazz vinyl record",
+    "image": "images/idees/vinyle-de-jazz.jpg",
+    "credit": "Samarkandus · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Jeu de société coopératif",
+    "description": "On gagne ou on perd ensemble : idéal pour les soirées en famille.",
+    "category": "loisirs",
+    "icon": "puzzle",
+    "price": 32,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "board game",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Kit d’aquarelle",
+    "description": "Des couleurs, un pinceau et un carnet pour se mettre à peindre.",
+    "category": "loisirs",
+    "icon": "carnet",
+    "price": 26,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "watercolor paint set",
+    "image": "images/idees/kit-daquarelle.jpg",
+    "credit": "Ariel Waldman from Muncie · CC BY-SA 2.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Pelote et aiguilles à tricoter",
+    "description": "Un kit pour tricoter son premier bonnet, avec les explications.",
+    "category": "loisirs",
+    "icon": "carnet",
+    "price": 24,
+    "events": [
+      "noel",
+      "naissance",
+      "autre"
+    ],
+    "requete": "knitting yarn needles",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Abonnement magazine",
+    "description": "Un numéro par mois, à lire au calme, sur un sujet qui plaît.",
+    "category": "loisirs",
+    "icon": "carnet",
+    "price": 35,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "magazine",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Bande dessinée intégrale",
+    "description": "Une série complète à dévorer pendant les vacances.",
+    "category": "loisirs",
+    "icon": "carnet",
+    "price": 30,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "comic book",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Carnet en cuir",
+    "description": "Un carnet à remplir au fil des années, avec un élastique de fermeture.",
+    "category": "loisirs",
+    "icon": "carnet",
+    "price": 25,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "leather notebook",
+    "image": "images/idees/carnet-en-cuir.jpg",
+    "credit": "Kelly Jean kellyjean · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Kit de bougies à fabriquer",
+    "description": "Cire, mèche et parfums : de quoi fabriquer ses propres bougies.",
+    "category": "loisirs",
+    "icon": "lampe",
+    "price": 28,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "candle making",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Harmonica",
+    "description": "Petit, facile à glisser dans une poche, et on joue dès le premier soir.",
+    "category": "loisirs",
+    "icon": "musique",
+    "price": 15,
+    "events": [
+      "anniversaire",
+      "autre",
+      "noel"
+    ],
+    "requete": "harmonica",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Ukulélé",
+    "description": "Quatre cordes et quelques accords suffisent pour chanter ensemble.",
+    "category": "loisirs",
+    "icon": "musique",
+    "price": 60,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "ukulele",
+    "image": "images/idees/ukulele.jpg",
+    "credit": "Zapyon · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Séance d’escalade",
+    "description": "Un pass pour une salle de bloc, à essayer à deux.",
+    "category": "experiences",
+    "icon": "montagne",
+    "price": 45,
+    "events": [
+      "anniversaire",
+      "autre",
+      "noel"
+    ],
+    "requete": "bouldering gym",
+    "image": "images/idees/seance-descalade.jpg",
+    "credit": "John Kane · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Atelier poterie",
+    "description": "Une après-midi pour tourner l’argile, avec un cours pour débutants.",
+    "category": "experiences",
+    "icon": "tasse",
+    "price": 65,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "pottery workshop",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Nuit en cabane",
+    "description": "Une nuit dans un lieu isolé, pour partir sans aller loin.",
+    "category": "experiences",
+    "icon": "maison",
+    "price": 150,
+    "events": [
+      "mariage",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "wooden cabin forest",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Cours de cuisine",
+    "description": "Une soirée à apprendre un plat avec un chef, puis à le manger.",
+    "category": "experiences",
+    "icon": "panier",
+    "price": 80,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "cremaillere"
+    ],
+    "requete": "cooking class",
+    "image": "images/idees/cours-de-cuisine.jpg",
+    "credit": "בר · CC BY-SA 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Dîner au restaurant",
+    "description": "Une table réservée pour un repas qu’on ne fait pas soi-même.",
+    "category": "experiences",
+    "icon": "verre",
+    "price": 70,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "restaurant dinner table",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Cinéma en plein air",
+    "description": "Deux places pour une projection d’été, avec une couverture et du popcorn.",
+    "category": "experiences",
+    "icon": "musique",
+    "price": 25,
+    "events": [
+      "anniversaire",
+      "autre",
+      "noel"
+    ],
+    "requete": "outdoor cinema",
+    "image": "images/idees/cinema-en-plein-air.jpg",
+    "credit": "Kaethe17 · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Balade en bateau",
+    "description": "Une sortie sur l’eau d’une heure ou deux, à deux ou en groupe.",
+    "category": "experiences",
+    "icon": "montagne",
+    "price": 90,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "sailing boat",
+    "image": "images/idees/balade-en-bateau.jpg",
+    "credit": "Ansgar Koreng · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Initiation au surf",
+    "description": "Une matinée avec un moniteur, planche et combinaison comprises.",
+    "category": "experiences",
+    "icon": "montagne",
+    "price": 75,
+    "events": [
+      "anniversaire",
+      "autre",
+      "mariage"
+    ],
+    "requete": "surfing lesson",
+    "image": "images/idees/initiation-au-surf.jpg",
+    "credit": "Mrsurfingacademy · CC BY 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Atelier cocktails",
+    "description": "Une soirée à préparer ses propres cocktails avec un barman.",
+    "category": "experiences",
+    "icon": "verre",
+    "price": 55,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "cremaillere"
+    ],
+    "requete": "cocktail bar",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Places de concert",
+    "description": "Deux billets pour un concert d’un groupe qu’on aime.",
+    "category": "experiences",
+    "icon": "musique",
+    "price": 60,
+    "events": [
+      "anniversaire",
+      "autre",
+      "mariage"
+    ],
+    "requete": "concert crowd",
+    "image": "images/idees/places-de-concert.jpg",
+    "credit": "Asaf antman · CC BY 2.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Séance de massage",
+    "description": "Une heure pour relâcher les épaules, dans un institut de confiance.",
+    "category": "experiences",
+    "icon": "melange",
+    "price": 120,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "massage",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Cours de danse",
+    "description": "Des cours d’initiation à deux, pour un premier pas ensemble.",
+    "category": "experiences",
+    "icon": "musique",
+    "price": 40,
+    "events": [
+      "mariage",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "dance class",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Casque audio",
+    "description": "Un modèle à réduction de bruit, pour les trajets et le télétravail.",
+    "category": "high-tech",
+    "icon": "casque",
+    "price": 129,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "headphones",
+    "image": "images/idees/casque-audio.jpg",
+    "credit": "Florian Fuchs · CC BY-SA 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Enceinte nomade",
+    "description": "Petite, étanche, pour la plage comme pour la cuisine.",
+    "category": "high-tech",
+    "icon": "enceinte",
+    "price": 89,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "bluetooth speaker",
+    "image": "images/idees/enceinte-nomade.jpg",
+    "credit": "Trougnouf · CC BY 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Liseuse électronique",
+    "description": "Des milliers de livres dans une poche, lisibles même au soleil.",
+    "category": "high-tech",
+    "icon": "carnet",
+    "price": 119,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "e-reader",
+    "image": "images/idees/liseuse-electronique.jpg",
+    "credit": "Marley Sexton · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Montre connectée",
+    "description": "Suivi d’activité, notifications et une autonomie de plusieurs jours.",
+    "category": "high-tech",
+    "icon": "cadeau",
+    "price": 150,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "smartwatch",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Lampe de bureau",
+    "description": "Une lumière réglable, pour travailler sans fatiguer les yeux.",
+    "category": "high-tech",
+    "icon": "lampe",
+    "price": 45,
+    "events": [
+      "cremaillere",
+      "noel",
+      "autre"
+    ],
+    "requete": "desk lamp",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Appareil photo instantané",
+    "description": "Des photos imprimées tout de suite, à coller sur le mur.",
+    "category": "high-tech",
+    "icon": "cadeau",
+    "price": 90,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "instant camera",
+    "image": "images/idees/appareil-photo-instantane.jpg",
+    "credit": "Pierre André Leclercq · CC0 · Wikimedia Commons"
+  },
+  {
+    "title": "Clavier mécanique",
+    "description": "Une frappe franche pour le travail comme pour les jeux.",
+    "category": "high-tech",
+    "icon": "casque",
+    "price": 110,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "mechanical keyboard",
+    "image": "images/idees/clavier-mecanique.jpg",
+    "credit": "Thanasis Termitzoglou · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Batterie externe",
+    "description": "Un bloc de grande capacité, pour ne jamais tomber à plat en voyage.",
+    "category": "high-tech",
+    "icon": "enceinte",
+    "price": 35,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "power bank",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Tapis d’éveil",
+    "description": "Un espace de jeu pour les premiers mois, avec des arches à attraper.",
+    "category": "bebe",
+    "icon": "bebe",
+    "price": 59,
+    "events": [
+      "naissance"
+    ],
+    "requete": "baby play mat",
+    "image": "images/idees/tapis-deveil.jpg",
+    "credit": "4455out · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Gigoteuse",
+    "description": "Un sac de couchage pour bébé, pour dormir sans couverture.",
+    "category": "bebe",
+    "icon": "bebe",
+    "price": 39,
+    "events": [
+      "naissance"
+    ],
+    "requete": "baby sleeping bag",
+    "image": "images/idees/gigoteuse.jpg",
+    "credit": "Alpantex · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Livres en tissu",
+    "description": "Des livres pour bébé à toucher, à mordiller, à découvrir.",
+    "category": "bebe",
+    "icon": "carnet",
+    "price": 18,
+    "events": [
+      "naissance"
+    ],
+    "requete": "cloth book baby",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Doudou en peluche",
+    "description": "Un compagnon doux, à garder près du lit dès la naissance.",
+    "category": "bebe",
+    "icon": "bebe",
+    "price": 22,
+    "events": [
+      "naissance"
+    ],
+    "requete": "baby plush toy",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Hochet en bois",
+    "description": "Léger, sans peinture, pour les premiers jeux de main.",
+    "category": "bebe",
+    "icon": "bebe",
+    "price": 12,
+    "events": [
+      "naissance"
+    ],
+    "requete": "wooden rattle",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Veilleuse",
+    "description": "Une lumière douce pour les nuits, qui ne réveille pas.",
+    "category": "bebe",
+    "icon": "lampe",
+    "price": 28,
+    "events": [
+      "naissance"
+    ],
+    "requete": "night light",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Écharpe en laine",
+    "description": "Une écharpe chaude, à nouer sous le manteau pour l’hiver.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 35,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "wool scarf",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Sac à dos",
+    "description": "Un modèle solide, avec un compartiment pour l’ordinateur.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 65,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "backpack",
+    "image": "images/idees/sac-a-dos.jpg",
+    "credit": "SGrabarczuk (WMF) · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Montre classique",
+    "description": "Un bracelet cuir et un cadran sobre, pour toutes les occasions.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 120,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "noel"
+    ],
+    "requete": "wristwatch",
+    "image": "images/idees/montre-classique.jpg",
+    "credit": "Petar Milošević · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Tablier de cuisine",
+    "description": "En coton épais, avec une poche, pour cuisiner sans se salir.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 25,
+    "events": [
+      "noel",
+      "cremaillere",
+      "anniversaire"
+    ],
+    "requete": "apron",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Chapeau de soleil",
+    "description": "Un chapeau à large bord pour les promenades d’été.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 30,
+    "events": [
+      "anniversaire",
+      "autre",
+      "mariage"
+    ],
+    "requete": "sun hat",
+    "image": "images/idees/chapeau-de-soleil.jpg",
+    "credit": "Eric Polk · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Bonnet en laine",
+    "description": "Un bonnet tricoté, doux, qui tient bien les oreilles au froid.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 18,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "knit beanie",
+    "image": "images/idees/bonnet-en-laine.jpg",
+    "credit": "Robert Lender from Vienna, Austria, postprocessed by Rosso Robot (cropped, colors enhanced). · CC BY-SA 2.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Chaussettes illustrées",
+    "description": "Des motifs drôles, pour mettre un peu de couleur dans les tiroirs.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 15,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "patterned socks",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Lunettes de soleil",
+    "description": "Une monture légère, avec une protection UV pour les balades.",
+    "category": "mode",
+    "icon": "cadeau",
+    "price": 60,
+    "events": [
+      "anniversaire",
+      "autre",
+      "mariage"
+    ],
+    "requete": "sunglasses",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Gourde isotherme",
+    "description": "Elle garde le froid toute la journée, pour la randonnée comme pour le bureau.",
+    "category": "sport",
+    "icon": "montagne",
+    "price": 25,
+    "events": [
+      "anniversaire",
+      "autre",
+      "noel"
+    ],
+    "requete": "insulated water bottle",
+    "image": "images/idees/gourde-isotherme.jpg",
+    "credit": "Tikboodle · CC BY-SA 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Tapis de yoga",
+    "description": "Antidérapant et épais, pour pratiquer chez soi.",
+    "category": "sport",
+    "icon": "montagne",
+    "price": 45,
+    "events": [
+      "anniversaire",
+      "autre",
+      "noel"
+    ],
+    "requete": "yoga mat",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Ballon de football",
+    "description": "Un ballon officiel pour jouer dans le parc à la sortie de l’école.",
+    "category": "sport",
+    "icon": "montagne",
+    "price": 25,
+    "events": [
+      "anniversaire",
+      "naissance",
+      "autre"
+    ],
+    "requete": "football",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Carte piscine",
+    "description": "Un carnet de dix entrées pour nager toute l’année.",
+    "category": "sport",
+    "icon": "montagne",
+    "price": 40,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "swimming pool",
+    "image": "images/idees/carte-piscine.jpg",
+    "credit": "Kritzolina · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Lampe frontale",
+    "description": "Les mains libres pour courir ou camper la nuit.",
+    "category": "sport",
+    "icon": "lampe",
+    "price": 30,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "headlamp",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Raquettes de badminton",
+    "description": "Une paire de raquettes et des volants, pour jouer dehors l’été.",
+    "category": "sport",
+    "icon": "montagne",
+    "price": 40,
+    "events": [
+      "anniversaire",
+      "autre",
+      "noel"
+    ],
+    "requete": "badminton rackets",
+    "image": "images/idees/raquettes-de-badminton.jpg",
+    "credit": "Vladsinger at English Wikipedia · CC BY-SA 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Jeu de boules",
+    "description": "Un jeu de pétanque complet, à installer sur la pelouse.",
+    "category": "sport",
+    "icon": "montagne",
+    "price": 35,
+    "events": [
+      "anniversaire",
+      "autre",
+      "mariage"
+    ],
+    "requete": "petanque boules",
+    "image": "images/idees/jeu-de-boules.jpg",
+    "credit": "Ermell · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Casque de vélo",
+    "description": "Léger et ventilé, pour les trajets quotidiens comme les sorties.",
+    "category": "sport",
+    "icon": "montagne",
+    "price": 45,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "bicycle helmet",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Savon artisanal",
+    "description": "Des savons aux huiles végétales, qu’on garde en guise de petit plaisir.",
+    "category": "beaute",
+    "icon": "melange",
+    "price": 9,
+    "events": [
+      "noel",
+      "anniversaire",
+      "mariage"
+    ],
+    "requete": "handmade soap",
+    "image": "images/idees/savon-artisanal.jpg",
+    "credit": "Malene Thyssen · CC BY 2.5 · Wikimedia Commons"
+  },
+  {
+    "title": "Coffret soins visage",
+    "description": "Un nettoyant, un sérum et une crème, pour une routine simple.",
+    "category": "beaute",
+    "icon": "melange",
+    "price": 40,
+    "events": [
+      "noel",
+      "anniversaire",
+      "mariage"
+    ],
+    "requete": "skincare set",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Huile de massage",
+    "description": "Une huile parfumée pour des soirées à deux, en douceur.",
+    "category": "beaute",
+    "icon": "melange",
+    "price": 22,
+    "events": [
+      "mariage",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "massage oil",
+    "image": "images/idees/huile-de-massage.jpg",
+    "credit": "CEphoto, Uwe Aranas · CC BY-SA 3.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Parfum d’intérieur",
+    "description": "Un flacon qui parfume les textiles et la pièce pendant des semaines.",
+    "category": "beaute",
+    "icon": "melange",
+    "price": 30,
+    "events": [
+      "cremaillere",
+      "noel",
+      "mariage"
+    ],
+    "requete": "room fragrance",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Brosse à cheveux en bois",
+    "description": "Une brosse douce, qui démêle sans abîmer.",
+    "category": "beaute",
+    "icon": "melange",
+    "price": 18,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "wooden hairbrush",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Sels de bain",
+    "description": "Un coffret de bains moussants, pour une fin de semaine plus douce.",
+    "category": "beaute",
+    "icon": "melange",
+    "price": 16,
+    "events": [
+      "noel",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "bath bombs",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Carnet de voyage",
+    "description": "Des pages blanches à remplir de cartes, de tickets et de souvenirs.",
+    "category": "voyage",
+    "icon": "carnet",
+    "price": 16,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "travel journal",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Sac de voyage",
+    "description": "Un sac à roulettes de cabine, qui passe dans tous les avions.",
+    "category": "voyage",
+    "icon": "cadeau",
+    "price": 70,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "travel bag",
+    "image": "images/idees/sac-de-voyage.jpg",
+    "credit": "Berthold Werner · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Pochette à passeport",
+    "description": "Pour garder papiers, cartes et billets au même endroit.",
+    "category": "voyage",
+    "icon": "cadeau",
+    "price": 20,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "passport wallet",
+    "image": "images/idees/pochette-a-passeport.jpg",
+    "credit": "Unknown authorUnknown author · CC BY 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Carte à gratter",
+    "description": "Une carte du monde à gratter au fil des voyages.",
+    "category": "voyage",
+    "icon": "carnet",
+    "price": 15,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "scratch map",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Trousse de toilette",
+    "description": "Un étui imperméable pour les flacons, à emporter partout.",
+    "category": "voyage",
+    "icon": "cadeau",
+    "price": 25,
+    "events": [
+      "anniversaire",
+      "mariage",
+      "autre"
+    ],
+    "requete": "toiletry bag",
+    "image": "images/idees/trousse-de-toilette.jpg",
+    "credit": "Peng · CC BY 2.5 · Wikimedia Commons"
+  },
+  {
+    "title": "Kit de semis aromatiques",
+    "description": "Basilic, persil et menthe à faire pousser sur le rebord de la fenêtre.",
+    "category": "jardin",
+    "icon": "plante",
+    "price": 18,
+    "events": [
+      "cremaillere",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "herb seedlings",
+    "image": "images/idees/kit-de-semis-aromatiques.jpg",
+    "credit": "TwHerbGrower · CC BY-SA 4.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Sécateur",
+    "description": "Une lame solide pour tailler les rosiers et les haies.",
+    "category": "jardin",
+    "icon": "plante",
+    "price": 25,
+    "events": [
+      "anniversaire",
+      "noel",
+      "autre"
+    ],
+    "requete": "pruning shears",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Arrosoir en métal",
+    "description": "Un arrosoir à long bec, qu’on garde sur la terrasse.",
+    "category": "jardin",
+    "icon": "plante",
+    "price": 28,
+    "events": [
+      "cremaillere",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "metal watering can",
+    "image": "images/idees/arrosoir-en-metal.jpg",
+    "credit": "Shixart1985 · CC BY 2.0 · Wikimedia Commons"
+  },
+  {
+    "title": "Graines de fleurs sauvages",
+    "description": "Un sachet de mélange à semer au printemps, pour les abeilles.",
+    "category": "jardin",
+    "icon": "plante",
+    "price": 9,
+    "events": [
+      "cremaillere",
+      "anniversaire",
+      "autre"
+    ],
+    "requete": "wildflower seeds",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Couteau de cuisine",
+    "description": "Une lame bien équilibrée, qui tranche sans effort les légumes.",
+    "category": "cuisine",
+    "icon": "tasse",
+    "price": 65,
+    "events": [
+      "noel",
+      "cremaillere",
+      "mariage"
+    ],
+    "requete": "chef knife",
+    "image": null,
+    "credit": null
+  },
+  {
+    "title": "Moule à muffins en silicone",
+    "description": "Douze alvéoles antiadhésives, pour les gâteaux du dimanche.",
+    "category": "cuisine",
+    "icon": "tasse",
+    "price": 15,
+    "events": [
+      "noel",
+      "cremaillere",
+      "mariage"
+    ],
+    "requete": "muffin tin",
+    "image": "images/idees/moule-a-muffins-en-silicone.jpg",
+    "credit": "Evan-Amos · Public domain · Wikimedia Commons"
+  }
+]

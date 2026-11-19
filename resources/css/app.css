@@ -246,6 +246,8 @@ a { color: inherit; }
 @media (min-width: 640px) { .idees { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 960px) { .idees { grid-template-columns: repeat(3, 1fr); } }
 .idee { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.idee-photo { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 16px; }
+.idee-credit { font-size: 12px; line-height: 1.4; color: var(--brume); }
 .idee p { color: var(--brume); }
 .idee .h3 { margin-top: 6px; }
 .idee form { margin-top: auto; padding-top: 8px; }
