@@ -121,6 +121,42 @@ class CadeauxTest extends TestCase
         $this->assertDatabaseMissing('gifts', ['id' => $cadeau->id]);
     }
 
+    public function test_le_proprietaire_modifie_un_cadeau(): void
+    {
+        $cadeau = $this->liste->cadeaux()->create(['title' => 'Plaid', 'price' => 50, 'quantity' => 1]);
+
+        $this->actingAs($this->camille)
+            ->put("/mes-listes/{$this->liste->id}/cadeaux/{$cadeau->id}", [
+                'title' => 'Plaid en laine', 'price' => '89', 'quantity' => 2, 'note' => 'Gris', 'favorite' => '1',
+            ])
+            ->assertSessionHas('statut');
+
+        $this->assertDatabaseHas('gifts', ['id' => $cadeau->id, 'title' => 'Plaid en laine', 'price' => 89, 'quantity' => 2, 'note' => 'Gris', 'favorite' => true]);
+    }
+
+    public function test_on_ne_descend_pas_la_quantite_sous_ce_qui_est_deja_pris(): void
+    {
+        $cadeau = $this->liste->cadeaux()->create(['title' => 'Romans', 'quantity' => 3]);
+        $invite = $this->liste->invites()->create(['name' => 'Inès']);
+        $cadeau->reservations()->create(['guest_id' => $invite->id, 'quantity' => 2]);
+
+        $this->actingAs($this->camille)
+            ->put("/mes-listes/{$this->liste->id}/cadeaux/{$cadeau->id}", ['title' => 'Romans', 'quantity' => 1])
+            ->assertSessionHasErrors(['quantity' => 'Déjà 2 pris : la quantité ne peut pas descendre en dessous.'], null, 'modification-'.$cadeau->id);
+
+        $this->assertDatabaseHas('gifts', ['id' => $cadeau->id, 'quantity' => 3]);
+    }
+
+    public function test_un_autre_compte_ne_modifie_pas_le_cadeau(): void
+    {
+        $cadeau = $this->liste->cadeaux()->create(['title' => 'Plaid', 'quantity' => 1]);
+
+        $this->actingAs(User::factory()->create())
+            ->put("/mes-listes/{$this->liste->id}/cadeaux/{$cadeau->id}", ['title' => 'Pirate', 'quantity' => 1])
+            ->assertNotFound();
+        $this->assertDatabaseHas('gifts', ['id' => $cadeau->id, 'title' => 'Plaid']);
+    }
+
     public function test_un_cadeau_ne_se_retire_pas_depuis_une_autre_liste(): void
     {
         $autre = Liste::create(['title' => 'Crémaillère', 'event_type' => 'cremaillere']);
