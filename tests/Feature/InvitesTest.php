@@ -247,4 +247,18 @@ class InvitesTest extends TestCase
             ->assertDontSee('Réservé')
             ->assertDontSee('80,00');
     }
+
+    public function test_un_cadeau_pris_a_son_ruban_noue_et_un_prix_rond_s_affiche_sans_centimes(): void
+    {
+        $this->vue($this->invite('Inès'))
+            ->call('reserver', $this->plaid->id)
+            ->assertSeeHtml('emballage emballage-noue emballage-mien')
+            ->assertSee('59 €')
+            ->assertDontSee('59,00');
+
+        // Pour un autre invité, le ruban est noué mais pas à ses couleurs.
+        $this->vue($this->invite('Hugo'))
+            ->assertSeeHtml('emballage-ruban')
+            ->assertDontSeeHtml('emballage-mien');
+    }
 }

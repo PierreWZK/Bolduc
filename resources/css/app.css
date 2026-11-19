@@ -233,6 +233,25 @@ a { color: inherit; }
 .invite-bonjour { margin-bottom: 8px; font-size: 19px; }
 .invite-prenom { margin: 8px 0 0; }
 .cadeau-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 12px; }
+/* Concept A : chaque cadeau est un paquet emballé ; un cadeau pris a son ruban noué (bolduc si c'est le tien). */
+.emballages { display: grid; gap: 16px; margin-top: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.emballage { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--filet); border-radius: 20px; background: #fff; }
+.emballage-visuel { position: relative; display: grid; place-items: center; aspect-ratio: 3 / 2; overflow: hidden; }
+.emballage-visuel > .icone { width: 48px; height: 48px; }
+.emballage-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.emballage-badge { position: absolute; top: 12px; left: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 999px; background: #fff; color: var(--bolduc); font: 600 13px/1 var(--texte); box-shadow: var(--ombre); }
+.emballage-badge .icone { width: 14px; height: 14px; fill: currentColor; }
+.emballage-corps { display: grid; flex: 1; align-content: space-between; gap: 14px; padding: 16px; }
+.emballage .cadeau-actions { justify-content: flex-start; }
+.emballage-ruban { position: absolute; inset: 0; color: var(--or); pointer-events: none; }
+.emballage-mien .emballage-ruban { color: var(--bolduc); }
+.emballage-ruban::before, .emballage-ruban::after { content: ''; position: absolute; background: currentColor; box-shadow: 0 0 0 2px rgb(255 255 255 / .35); }
+.emballage-ruban::before { top: 0; bottom: 0; left: 50%; width: 14px; margin-left: -7px; animation: ruban-vertical .35s ease-out both; }
+.emballage-ruban::after { left: 0; right: 0; top: 50%; height: 14px; margin-top: -7px; animation: ruban-horizontal .35s .1s ease-out both; }
+.emballage-noeud { position: absolute; top: 50%; left: 50%; z-index: 1; width: 76px; margin: -22px 0 0 -38px; fill: currentColor; stroke: currentColor; filter: drop-shadow(0 4px 6px rgb(42 21 51 / .25)); animation: noeud-pose .45s .3s cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes ruban-vertical { from { transform: scaleY(0); } }
+@keyframes ruban-horizontal { from { transform: scaleX(0); } }
+@keyframes noeud-pose { from { transform: scale(0) rotate(-20deg); } }
 .part-saisie { display: flex; gap: 8px; }
 .part-saisie input { width: 120px; min-height: 36px; padding: 0 14px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; font-size: 15px; }
 .part-saisie input:focus { outline: none; border-color: var(--encre); background: #fff; }
@@ -311,7 +330,7 @@ a { color: inherit; }
     .indices li { flex-direction: column; align-items: flex-start; gap: 2px; }
 }
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
 
 /* Jeux du jour (/jeux) */
