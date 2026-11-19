@@ -59,6 +59,54 @@ class CadeauxTest extends TestCase
         $this->assertSame(1, $cadeau->quantity);
     }
 
+    public function test_sans_prix_dans_les_balises_gemini_le_lit_dans_le_texte(): void
+    {
+        $this->boutiqueEnLigne();
+        config(['services.gemini.key' => 'cle-de-test']);
+        Http::fake([
+            'https://boutique.test/*' => Http::response('<html><head><title>Plaid</title></head><body><p>Plaid en laine, 59,90 €</p></body></html>', 200),
+            'generativelanguage.googleapis.com/*' => Http::response(['candidates' => [['content' => ['parts' => [['text' => json_encode(['title' => 'Plaid en laine', 'price' => 59.9, 'image' => null])]]]]]]),
+        ]);
+
+        $this->actingAs($this->camille)
+            ->post("/mes-listes/{$this->liste->id}/cadeaux", ['url' => 'https://boutique.test/plaid']);
+
+        $cadeau = Cadeau::firstOrFail();
+        $this->assertSame('Plaid', $cadeau->title);
+        $this->assertSame('59.90', $cadeau->price);
+        Http::assertSent(fn ($requete) => str_contains($requete->url(), 'generativelanguage') && $requete->hasHeader('x-goog-api-key'));
+    }
+
+    public function test_une_reponse_gemini_invalide_ne_remplit_rien(): void
+    {
+        $this->boutiqueEnLigne();
+        config(['services.gemini.key' => 'cle-de-test']);
+        Http::fake([
+            'https://boutique.test/*' => Http::response('<html><head><title>Plaid</title></head><body>Sans prix</body></html>', 200),
+            'generativelanguage.googleapis.com/*' => Http::response(['candidates' => [['content' => ['parts' => [['text' => 'pas du json']]]]]]),
+        ]);
+
+        $this->actingAs($this->camille)
+            ->post("/mes-listes/{$this->liste->id}/cadeaux", ['url' => 'https://boutique.test/plaid']);
+
+        $cadeau = Cadeau::firstOrFail();
+        $this->assertSame('Plaid', $cadeau->title);
+        $this->assertNull($cadeau->price);
+    }
+
+    public function test_sans_cle_gemini_on_n_appelle_personne(): void
+    {
+        $this->boutiqueEnLigne();
+        config(['services.gemini.key' => null]);
+        Http::fake(['https://boutique.test/*' => Http::response('<html><head><title>Plaid</title></head><body>Sans prix</body></html>', 200)]);
+
+        $this->actingAs($this->camille)
+            ->post("/mes-listes/{$this->liste->id}/cadeaux", ['url' => 'https://boutique.test/plaid']);
+
+        Http::assertSent(fn ($requete) => str_contains($requete->url(), 'boutique.test'));
+        Http::assertNotSent(fn ($requete) => str_contains($requete->url(), 'generativelanguage'));
+    }
+
     public function test_un_lien_interne_n_est_jamais_suivi(): void
     {
         Http::fake();
