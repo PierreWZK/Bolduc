@@ -23,6 +23,14 @@ class ListeInvite extends Component
 
     public ?string $message = null;
 
+    /** Cadeau tout juste réservé ou financé : le toast propose de l'annuler. */
+    public ?int $cadeauRecent = null;
+
+    /** Filtres de la liste : '' ou moins20, de20a50, plus50 ; et seulement les cadeaux encore libres. */
+    public string $budget = '';
+
+    public bool $libresSeulement = false;
+
     public function mount(Liste $liste, Invite $invite): void
     {
         $this->listeId = $liste->id;
@@ -56,6 +64,7 @@ class ListeInvite extends Component
             $reservation->save();
 
             $this->message = 'C\'est noté : tu t\'en occupes.';
+            $this->cadeauRecent = $cadeauId;
         });
     }
 
@@ -100,6 +109,7 @@ class ListeInvite extends Component
             $cadeau->contributions()->updateOrCreate(['guest_id' => $this->inviteId], ['amount' => $montant]);
             unset($this->parts[$cadeauId]);
             $this->message = 'Merci, ta part est notée.';
+            $this->cadeauRecent = $cadeauId;
         });
     }
 
@@ -114,6 +124,20 @@ class ListeInvite extends Component
         $cadeau->contributions()->where('guest_id', $this->inviteId)->delete();
 
         $this->message = 'C\'est annulé : le cadeau est de nouveau libre.';
+        $this->cadeauRecent = null;
+    }
+
+    public function annulerRecent(): void
+    {
+        if ($this->cadeauRecent) {
+            $this->annuler($this->cadeauRecent);
+        }
+    }
+
+    public function fermerToast(): void
+    {
+        $this->message = null;
+        $this->cadeauRecent = null;
     }
 
     private function cadeau(int $id, bool $verrou = false): Cadeau
@@ -136,8 +160,46 @@ class ListeInvite extends Component
 
     public function render()
     {
+        $liste = Liste::with(['cadeaux.reservations.invite', 'cadeaux.contributions.invite'])->findOrFail($this->listeId);
+
+        $cadeaux = $liste->cadeaux
+            ->filter(fn (Cadeau $cadeau) => ! $this->libresSeulement || ! $cadeau->estComplet())
+            ->filter(fn (Cadeau $cadeau) => $this->dansBudget($cadeau))
+            ->values();
+
+        // Ce que l'invité offre : ses réservations (prix × exemplaires) et ses parts.
+        $mesEngagements = $liste->cadeaux->map(function (Cadeau $cadeau) {
+            $mienne = $cadeau->reservations->firstWhere('guest_id', $this->inviteId);
+            $maPart = $cadeau->contributions->firstWhere('guest_id', $this->inviteId);
+
+            return $mienne ? (float) $cadeau->price * $mienne->quantity : ($maPart ? (float) $maPart->amount : null);
+        })->filter(fn ($montant) => $montant !== null);
+
         return view('livewire.liste-invite', [
-            'liste' => Liste::with(['cadeaux.reservations.invite', 'cadeaux.contributions.invite'])->findOrFail($this->listeId),
+            'liste' => $liste,
+            'cadeaux' => $cadeaux,
+            'recap' => ['nombre' => $mesEngagements->count(), 'total' => $mesEngagements->sum()],
         ]);
+    }
+
+    // Mêmes seuils que le catalogue d'idées (Idee::BUDGETS).
+    private function dansBudget(Cadeau $cadeau): bool
+    {
+        if ($this->budget === '') {
+            return true;
+        }
+
+        if ($cadeau->price === null) {
+            return false;
+        }
+
+        $prix = (float) $cadeau->price;
+
+        return match ($this->budget) {
+            'moins20' => $prix < 20,
+            'de20a50' => $prix >= 20 && $prix <= 50,
+            'plus50' => $prix > 50,
+            default => true,
+        };
     }
 }

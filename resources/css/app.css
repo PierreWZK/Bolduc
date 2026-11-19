@@ -350,3 +350,17 @@ a { color: inherit; }
 .champ-mini { min-height: 36px; min-width: 0; flex: 1 1 160px; padding: 0 16px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; font-size: 15px; }
 [x-cloak] { display: none !important; }
 .jeu-choix { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; max-height: 240px; overflow-y: auto; }
+
+/* Liste invité (6b) : toast avec annulation, récap, filtres, carte de bienvenue */
+.toast { position: fixed; left: 50%; bottom: 20px; z-index: 50; display: flex; align-items: center; gap: 14px; width: max-content; max-width: calc(100% - 32px); transform: translateX(-50%); padding: 12px 14px 12px 20px; border-radius: 999px; background: var(--encre); color: #fff; font: 500 15px/1.4 var(--texte); box-shadow: var(--ombre); animation: toast-entree .3s ease-out both; }
+.toast .lien { color: var(--or); font-weight: 600; }
+.toast-fermer { min-width: 32px; min-height: 32px; border: 0; border-radius: 999px; background: rgb(255 255 255 / .12); color: #fff; font: 600 18px/1 var(--texte); cursor: pointer; }
+@keyframes toast-entree { from { opacity: 0; transform: translate(-50%, 12px); } }
+.recap { margin: 24px 0 0; padding: 16px 20px; border-radius: 20px; background: var(--or-pale); color: var(--or-texte); }
+.recap p { margin: 0; }
+.filtres-invite { align-items: center; }
+.case-filtre { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; font-size: 15px; font-weight: 500; cursor: pointer; }
+.case-filtre input { width: 20px; height: 20px; accent-color: var(--bolduc); }
+.bienvenue { margin-top: 24px; }
+.bienvenue-lien { margin: 10px 0 0; font-size: 15px; }
+@media (prefers-reduced-motion: reduce) { .toast { animation: none; } }

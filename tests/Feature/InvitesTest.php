@@ -248,6 +248,35 @@ class InvitesTest extends TestCase
             ->assertDontSee('80,00');
     }
 
+    public function test_le_toast_propose_d_annuler_la_derniere_reservation(): void
+    {
+        $vue = $this->vue($this->invite('Inès'))->call('reserver', $this->plaid->id);
+        $vue->assertSet('cadeauRecent', $this->plaid->id)->assertSee('Annuler');
+
+        $vue->call('annulerRecent')->assertSet('cadeauRecent', null);
+        $this->assertSame(0, Reservation::count());
+    }
+
+    public function test_le_filtre_budget_et_les_cadeaux_libres(): void
+    {
+        $cafe = $this->liste->cadeaux()->create(['title' => 'Café en grains', 'price' => 14.5, 'quantity' => 1]);
+        $vue = $this->vue($this->invite('Inès'));
+
+        $vue->set('budget', 'moins20')->assertSee('Café en grains')->assertDontSee('Plaid en laine');
+
+        $vue->set('budget', '')->call('reserver', $this->plaid->id)->set('libresSeulement', true)
+            ->assertDontSee('Plaid en laine')
+            ->assertSee('Café en grains');
+    }
+
+    public function test_le_recap_compte_ce_que_l_invite_offre(): void
+    {
+        $this->vue($this->invite('Inès'))
+            ->assertSee('Rien encore')
+            ->call('reserver', $this->plaid->id)
+            ->assertSee('1 cadeau · 59 € engagés');
+    }
+
     public function test_un_cadeau_pris_a_son_ruban_noue_et_un_prix_rond_s_affiche_sans_centimes(): void
     {
         $this->vue($this->invite('Inès'))
