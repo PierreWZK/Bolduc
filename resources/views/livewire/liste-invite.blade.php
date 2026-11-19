@@ -5,15 +5,46 @@
 @endphp
 <div>
     @if ($message)
-        <p class="message" role="status">{{ $message }}</p>
+        <div class="toast" role="status" wire:key="toast">
+            <span>{{ $message }}</span>
+            @if ($cadeauRecent && ! $liste->estPassee())
+                <button type="button" class="lien" wire:click="annulerRecent">Annuler</button>
+            @endif
+            <button type="button" class="toast-fermer" wire:click="fermerToast" aria-label="Fermer">×</button>
+        </div>
     @endif
 
     @if ($liste->estPassee())
         <p class="message message-info">La date est passée : la liste est fermée. Merci à tous !</p>
     @endif
 
+    <div class="recap">
+        <p><strong>Ce que j'offre</strong></p>
+        @if ($recap['nombre'] > 0)
+            <p class="legende">{{ $recap['nombre'] }} {{ $recap['nombre'] > 1 ? 'cadeaux' : 'cadeau' }} · {{ $euros($recap['total']) }} engagés</p>
+        @else
+            <p class="legende">Rien encore. Choisis un cadeau ci-dessous.</p>
+        @endif
+    </div>
+
+    <div class="filtres filtres-invite">
+        <div class="champ">
+            <label for="filtre-budget">Budget</label>
+            <select id="filtre-budget" wire:model.live="budget">
+                <option value="">Tous les budgets</option>
+                @foreach (\App\Models\Idee::BUDGETS as $cle => $nom)
+                    <option value="{{ $cle }}">{{ $nom }}</option>
+                @endforeach
+            </select>
+        </div>
+        <label class="case-filtre">
+            <input type="checkbox" wire:model.live="libresSeulement">
+            <span>Seulement les cadeaux encore libres</span>
+        </label>
+    </div>
+
     <div class="emballages">
-        @forelse ($liste->cadeaux as $cadeau)
+        @forelse ($cadeaux as $cadeau)
             @php
                 $mienne = $cadeau->reservations->firstWhere('guest_id', $inviteId);
                 $maPart = $cadeau->contributions->firstWhere('guest_id', $inviteId);
