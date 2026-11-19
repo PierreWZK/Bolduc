@@ -90,9 +90,6 @@
                 @if ($cadeau->favorite)
                     <span class="pastille pastille-rose">Coup de cœur</span>
                 @endif
-                @if ($cadeau->shared)
-                    <span class="pastille pastille-encre">À plusieurs</span>
-                @endif
 
                 <details class="cadeau-edition">
                     <summary class="lien">Modifier</summary>
@@ -156,13 +153,6 @@
                     <input type="checkbox" name="favorite" value="1">
                     Coup de cœur
                 </label>
-                <label class="coeur">
-                    <input type="checkbox" name="shared" value="1">
-                    À plusieurs : tes proches se partagent le prix
-                </label>
-                @error('shared')
-                    <p class="erreur">{{ $message }}</p>
-                @enderror
                 <button type="submit" class="bouton bouton-plein">Ajouter à la liste</button>
             </form>
         </div>

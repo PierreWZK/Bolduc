@@ -10,12 +10,11 @@ class Cadeau extends Model
 {
     protected $table = 'gifts';
 
-    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'shared', 'secret', 'added_by', 'note', 'thanked'];
+    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'secret', 'added_by', 'note', 'thanked'];
 
     protected $casts = [
         'price' => 'decimal:2',
         'favorite' => 'boolean',
-        'shared' => 'boolean',
         'secret' => 'boolean',
         'thanked' => 'boolean',
     ];
@@ -51,10 +50,13 @@ class Cadeau extends Model
         return (float) $this->contributions->sum('amount');
     }
 
+    // Un cadeau est complet réservé en entier, ou financé par les parts (un seul exemplaire, avec un prix).
     public function estComplet(): bool
     {
-        return $this->shared
-            ? $this->price !== null && $this->montantCollecte() >= (float) $this->price
-            : $this->unitesPrises() >= $this->quantity;
+        if ($this->unitesPrises() >= $this->quantity) {
+            return true;
+        }
+
+        return $this->price !== null && $this->quantity === 1 && $this->montantCollecte() >= (float) $this->price;
     }
 }
