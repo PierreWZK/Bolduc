@@ -290,4 +290,19 @@ class InvitesTest extends TestCase
             ->assertSeeHtml('emballage-ruban')
             ->assertDontSeeHtml('emballage-mien');
     }
+
+    public function test_le_createur_voit_des_paquets_fermes_sans_info_de_reservation(): void
+    {
+        $this->plaid->reservations()->create(['guest_id' => $this->invite('Inès')->id, 'quantity' => 1]);
+
+        $this->actingAs($this->camille)
+            ->get('/mes-listes/'.$this->liste->id)
+            ->assertOk()
+            ->assertSeeHtml('class="emballage"')
+            ->assertSee('59 €')
+            ->assertDontSee('59,00')
+            ->assertDontSee('exemplaire')
+            ->assertDontSee('Inès')
+            ->assertDontSee("Tu t'en occupes");
+    }
 }

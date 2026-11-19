@@ -1,4 +1,9 @@
 <x-layout :titre="$liste->title" :noindex="true">
+    @php
+        // « 89 € » pour un prix rond, « 89,50 € » sinon.
+        $euros = fn ($montant) => number_format((float) $montant, fmod((float) $montant, 1) == 0 ? 0 : 2, ',', ' ').' €';
+        $teintes = ['rose', 'menthe', 'or'];
+    @endphp
     <section class="section conteneur">
         <a href="{{ route('listes') }}" class="lien">Mes listes</a>
 
@@ -66,29 +71,34 @@
         @else
         <h2 class="h3 cadeaux-titre">Les cadeaux <span class="legende">({{ $liste->cadeaux->count() }})</span></h2>
 
+        <div class="emballages">
         @forelse ($liste->cadeaux as $cadeau)
-            <article class="cadeau-fiche">
-                @if ($cadeau->image_url)
-                    <img src="{{ $cadeau->image_url }}" alt="" loading="lazy" width="72" height="72" class="cadeau-photo">
-                @else
-                    <span class="cadeau-icone teinte-or"><x-icone nom="cadeau" /></span>
-                @endif
+            {{-- Côté créateur, le paquet reste fermé : aucune info de réservation n'apparaît. --}}
+            <article class="emballage">
+                <div class="emballage-visuel teinte-{{ $teintes[$cadeau->id % 3] }}">
+                    @if ($cadeau->image_url)
+                        <img src="{{ $cadeau->image_url }}" alt="" loading="lazy" width="400" height="267" class="emballage-photo">
+                    @else
+                        <x-icone nom="cadeau" />
+                    @endif
 
+                    @if ($cadeau->favorite)
+                        <span class="emballage-badge"><x-icone nom="coeur" /> Coup de cœur</span>
+                    @endif
+                </div>
+
+                <div class="emballage-corps">
                 <div class="cadeau-texte">
                     <strong>{{ $cadeau->title }}</strong>
                     <span>
-                        @if ($cadeau->price) {{ number_format($cadeau->price, 2, ',', ' ') }} € · @endif
-                        {{ $cadeau->quantity }} {{ $cadeau->quantity > 1 ? 'exemplaires' : 'exemplaire' }}
+                        @if ($cadeau->price) {{ $euros($cadeau->price) }} @endif
+                        @if ($cadeau->quantity > 1) · {{ $cadeau->quantity }} exemplaires @endif
                         @if ($cadeau->note) · {{ $cadeau->note }} @endif
                     </span>
                     @if ($cadeau->url)
                         <a href="{{ $cadeau->url }}" rel="nofollow noopener" target="_blank" class="lien">Voir la boutique</a>
                     @endif
                 </div>
-
-                @if ($cadeau->favorite)
-                    <span class="pastille pastille-rose">Coup de cœur</span>
-                @endif
 
                 <details class="cadeau-edition">
                     <summary class="lien">Modifier</summary>
@@ -132,10 +142,12 @@
                     @method('DELETE')
                     <button type="submit" class="lien">Retirer</button>
                 </form>
+                </div>
             </article>
         @empty
             <p class="legende">Pas encore de cadeau. Colle un lien de boutique ci-dessous.</p>
         @endforelse
+        </div>
         @unless ($passee)
         <div class="carte ajout-cadeau">
             <h2 class="h3">Ajouter un cadeau</h2>
