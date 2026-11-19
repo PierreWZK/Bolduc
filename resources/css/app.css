@@ -364,3 +364,13 @@ a { color: inherit; }
 .bienvenue { margin-top: 24px; }
 .bienvenue-lien { margin: 10px 0 0; font-size: 15px; }
 @media (prefers-reduced-motion: reduce) { .toast { animation: none; } }
+
+/* Créateur (6c-b) : retour, menu d'options, actions d'un cadeau, ajout en deux temps */
+.liste-retour { display: inline-block; margin-bottom: 20px; }
+.menu-liste summary { list-style: none; cursor: pointer; }
+.menu-liste summary::-webkit-details-marker { display: none; }
+.menu-liste form { margin-top: 10px; }
+.emballage-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.en-ligne { display: inline; margin: 0; }
+.ajout-details { margin-bottom: 8px; }
+.ajout-details summary { cursor: pointer; margin-bottom: 14px; }
