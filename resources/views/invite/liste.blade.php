@@ -25,6 +25,7 @@
                     <x-champ nom="name" libelle="Ton prénom" autocomplete="given-name" required autofocus />
                     <x-champ nom="email" libelle="Ton e-mail (facultatif)" type="email" autocomplete="email" aide="Pour un rappel avant la fête, rien d'autre." />
                     <x-champ nom="magic_word" libelle="Ton mot magique" type="password" autocomplete="new-password" aide="Un petit mot à toi, pour te retrouver depuis un autre appareil." required />
+                    <x-piege />
                     <button type="submit" class="bouton bouton-plein">Voir la liste</button>
                 </form>
             </div>
