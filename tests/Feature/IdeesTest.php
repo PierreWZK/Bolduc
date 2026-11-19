@@ -34,6 +34,18 @@ class IdeesTest extends TestCase
         ]);
     }
 
+    public function test_le_seeder_charge_le_catalogue_complet_avec_les_photos_et_leurs_credits(): void
+    {
+        Idee::query()->delete();
+        $this->seed(\Database\Seeders\IdeeSeeder::class);
+
+        $this->assertSame(100, Idee::count());
+        Idee::whereNotNull('image')->get()->each(function (Idee $idee) {
+            $this->assertFileExists(public_path($idee->image));
+            $this->assertNotEmpty($idee->credit);
+        });
+    }
+
     public function test_le_catalogue_filtre_par_budget_et_par_evenement(): void
     {
         $this->get('/idees?budget=moins20')->assertDontSee('Vase en grès');
