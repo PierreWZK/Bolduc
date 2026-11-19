@@ -39,7 +39,9 @@ class ListeInvite extends Component
         DB::transaction(function () use ($cadeauId) {
             $cadeau = $this->cadeau($cadeauId, verrou: true);
 
-            if ($cadeau->shared) {
+            if ($cadeau->contributions()->exists()) {
+                $this->message = 'Quelqu\'un participe déjà à ce cadeau : tu peux ajouter ta part.';
+
                 return;
             }
 
@@ -69,7 +71,14 @@ class ListeInvite extends Component
         DB::transaction(function () use ($cadeauId, $montant) {
             $cadeau = $this->cadeau($cadeauId, verrou: true);
 
-            if (! $cadeau->shared || $cadeau->price === null) {
+            // Participer se fait sur un cadeau à prix unique, pas en plusieurs exemplaires.
+            if ($cadeau->price === null || $cadeau->quantity !== 1) {
+                return;
+            }
+
+            if ($cadeau->reservations()->exists()) {
+                $this->addError("parts.$cadeauId", 'Ce cadeau est déjà réservé en entier.');
+
                 return;
             }
 

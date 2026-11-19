@@ -141,7 +141,7 @@ class InvitesTest extends TestCase
 
     public function test_les_parts_ne_depassent_jamais_le_prix(): void
     {
-        $casque = $this->liste->cadeaux()->create(['title' => 'Casque audio', 'price' => 120, 'quantity' => 1, 'shared' => true]);
+        $casque = $this->liste->cadeaux()->create(['title' => 'Casque audio', 'price' => 120, 'quantity' => 1]);
 
         $this->vue($this->invite('Inès'))
             ->set("parts.{$casque->id}", '80')
@@ -156,6 +156,50 @@ class InvitesTest extends TestCase
         // Un cadeau à plusieurs ne se réserve pas d'un bloc.
         $this->vue($this->invite('Tom'))->call('reserver', $casque->id);
         $this->assertSame(0, Reservation::count());
+    }
+
+    public function test_un_invite_participe_sans_reserver_le_cadeau_en_entier(): void
+    {
+        $this->vue($this->invite('Inès'))
+            ->set("parts.{$this->plaid->id}", '20')
+            ->call('participer', $this->plaid->id)
+            ->assertHasNoErrors();
+
+        $this->assertSame(1, Contribution::count());
+        $this->assertSame(0, Reservation::count());
+    }
+
+    public function test_une_part_bloque_la_reservation_et_une_reservation_bloque_la_part(): void
+    {
+        $this->vue($this->invite('Inès'))->set("parts.{$this->plaid->id}", '20')->call('participer', $this->plaid->id);
+        $this->vue($this->invite('Hugo'))->call('reserver', $this->plaid->id);
+        $this->assertSame(0, Reservation::count());
+
+        $vase = $this->liste->cadeaux()->create(['title' => 'Vase', 'price' => 30, 'quantity' => 1]);
+        $this->vue($this->invite('Léa'))->call('reserver', $vase->id);
+        $this->vue($this->invite('Léo'))->set("parts.{$vase->id}", '10')->call('participer', $vase->id)->assertHasErrors("parts.{$vase->id}");
+        $this->assertSame(0, Contribution::where('gift_id', $vase->id)->count());
+    }
+
+    public function test_pas_de_part_sur_un_cadeau_en_plusieurs_exemplaires(): void
+    {
+        $romans = $this->liste->cadeaux()->create(['title' => 'Romans', 'price' => 15, 'quantity' => 3]);
+
+        $this->vue($this->invite('Inès'))->set("parts.{$romans->id}", '5')->call('participer', $romans->id);
+
+        $this->assertSame(0, Contribution::count());
+    }
+
+    public function test_le_createur_ne_voit_ni_les_parts_ni_la_case_a_plusieurs(): void
+    {
+        $this->vue($this->invite('Inès'))->set("parts.{$this->plaid->id}", '20')->call('participer', $this->plaid->id);
+
+        $this->actingAs($this->camille)
+            ->get('/mes-listes/'.$this->liste->id)
+            ->assertOk()
+            ->assertDontSee('Inès')
+            ->assertDontSee('À plusieurs')
+            ->assertDontSee('20,00');
     }
 
     public function test_annuler_libere_le_cadeau(): void
@@ -192,7 +236,7 @@ class InvitesTest extends TestCase
     {
         $ines = $this->invite('Inès');
         $this->plaid->reservations()->create(['guest_id' => $ines->id, 'quantity' => 1]);
-        $casque = $this->liste->cadeaux()->create(['title' => 'Casque', 'price' => 120, 'quantity' => 1, 'shared' => true]);
+        $casque = $this->liste->cadeaux()->create(['title' => 'Casque', 'price' => 120, 'quantity' => 1]);
         $casque->contributions()->create(['guest_id' => $ines->id, 'amount' => 80]);
 
         $this->actingAs($this->camille)

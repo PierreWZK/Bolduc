@@ -13,6 +13,7 @@
             $mienne = $cadeau->reservations->firstWhere('guest_id', $inviteId);
             $maPart = $cadeau->contributions->firstWhere('guest_id', $inviteId);
             $ouverte = ! $liste->estPassee();
+            $partageable = $cadeau->price && $cadeau->quantity === 1 && ! $mienne && $cadeau->reservations->isEmpty();
         @endphp
         <article class="cadeau-fiche" wire:key="cadeau-{{ $cadeau->id }}">
             @if ($cadeau->image_url)
@@ -32,7 +33,7 @@
                     <a href="{{ $cadeau->url }}" rel="nofollow noopener" target="_blank" class="lien">Voir la boutique</a>
                 @endif
 
-                @if ($cadeau->shared && $cadeau->price)
+                @if ($partageable && $cadeau->contributions->isNotEmpty())
                     @php
                         $collecte = $cadeau->montantCollecte();
                         $pourcent = min(100, round($collecte / (float) $cadeau->price * 100));
@@ -43,9 +44,7 @@
                             <span>{{ $cadeau->estComplet() ? 'Financé' : 'Il manque '.$euros((float) $cadeau->price - $collecte) }}</span>
                         </span>
                         <span class="jauge" role="progressbar" aria-label="Participations" aria-valuenow="{{ $pourcent }}" aria-valuemin="0" aria-valuemax="100"><span style="width: {{ $pourcent }}%"></span></span>
-                        @if ($cadeau->contributions->isNotEmpty())
-                            <span class="legende">Avec {{ $cadeau->contributions->pluck('invite.name')->join(', ') }}</span>
-                        @endif
+                        <span class="legende">Avec {{ $cadeau->contributions->pluck('invite.name')->join(', ') }}</span>
                     </div>
                 @endif
             </div>
@@ -59,22 +58,9 @@
                     <span class="pastille pastille-or">Idée secrète de {{ $cadeau->ajouteePar?->name }}</span>
                 @endif
 
-                @if ($cadeau->shared)
-                    <span class="pastille pastille-encre">À plusieurs</span>
-                    @if ($maPart)
-                        <span class="pastille pastille-menthe">Ta part : {{ $euros($maPart->amount) }}</span>
-                        @if ($ouverte) <button type="button" class="lien" wire:click="annuler({{ $cadeau->id }})">Annuler</button> @endif
-                    @endif
-                    @if ($ouverte && ! $cadeau->estComplet())
-                        <form class="part-saisie" wire:submit="participer({{ $cadeau->id }})">
-                            <label class="sr-only" for="part-{{ $cadeau->id }}">Ta part en euros</label>
-                            <input id="part-{{ $cadeau->id }}" type="number" min="1" step="1" inputmode="decimal" placeholder="Ta part (€)" wire:model="parts.{{ $cadeau->id }}">
-                            <button type="submit" class="bouton bouton-encre bouton-mini">{{ $maPart ? 'Changer' : 'Je participe' }}</button>
-                        </form>
-                    @endif
-                    @error("parts.$cadeau->id")
-                        <p class="erreur">{{ $message }}</p>
-                    @enderror
+                @if ($maPart)
+                    <span class="pastille pastille-menthe">Ta part : {{ $euros($maPart->amount) }}</span>
+                    @if ($ouverte) <button type="button" class="lien" wire:click="annuler({{ $cadeau->id }})">Annuler</button> @endif
                 @elseif ($mienne)
                     <span class="pastille pastille-menthe">Tu t'en occupes{{ $mienne->quantity > 1 ? ' (×'.$mienne->quantity.')' : '' }}</span>
                     @if ($ouverte)
@@ -84,15 +70,28 @@
                         <button type="button" class="lien" wire:click="annuler({{ $cadeau->id }})">Annuler</button>
                     @endif
                 @elseif ($cadeau->estComplet())
-                    <span class="pastille pastille-or">Réservé par {{ $cadeau->reservations->pluck('invite.name')->join(', ') }}</span>
+                    <span class="pastille pastille-or">{{ $cadeau->reservations->isNotEmpty() ? 'Réservé par '.$cadeau->reservations->pluck('invite.name')->join(', ') : 'Financé par les parts' }}</span>
                 @elseif ($ouverte)
                     @if ($cadeau->quantity > 1)
                         <span class="legende">{{ $cadeau->unitesPrises() }} sur {{ $cadeau->quantity }} pris</span>
                     @endif
-                    <button type="button" class="bouton bouton-encre bouton-mini" wire:click="reserver({{ $cadeau->id }})">Je m'en occupe</button>
+                    @if ($cadeau->contributions->isEmpty())
+                        <button type="button" class="bouton bouton-encre bouton-mini" wire:click="reserver({{ $cadeau->id }})">Je m'en occupe</button>
+                    @endif
                 @else
                     <span class="pastille pastille-menthe">Disponible</span>
                 @endif
+
+                @if ($ouverte && ! $cadeau->estComplet() && ($partageable || $maPart))
+                    <form class="part-saisie" wire:submit="participer({{ $cadeau->id }})">
+                        <label class="sr-only" for="part-{{ $cadeau->id }}">Ta part en euros</label>
+                        <input id="part-{{ $cadeau->id }}" type="number" min="1" step="1" inputmode="decimal" placeholder="Ta part (€)" wire:model="parts.{{ $cadeau->id }}">
+                        <button type="submit" class="bouton bouton-encre bouton-mini">{{ $maPart ? 'Changer' : 'Je participe' }}</button>
+                    </form>
+                @endif
+                @error("parts.$cadeau->id")
+                    <p class="erreur">{{ $message }}</p>
+                @enderror
             </div>
         </article>
     @empty

@@ -20,7 +20,6 @@ class CadeauController extends Controller
             'quantity' => ['nullable', 'integer', 'min:1', 'max:99'],
             'note' => ['nullable', 'string', 'max:120'],
             'favorite' => ['nullable', 'boolean'],
-            'shared' => ['nullable', 'boolean'],
         ]);
 
         $lu = filled($donnees['url'] ?? null)
@@ -33,10 +32,6 @@ class CadeauController extends Controller
         }
 
         $prix = $donnees['price'] ?? $lu['price'];
-        if ($request->boolean('shared') && ! $prix) {
-            return back()->withInput()->withErrors(['shared' => 'Un cadeau à plusieurs a besoin d\'un prix : la barre se remplit jusqu\'à lui.']);
-        }
-
         $liste->cadeaux()->create([
             'title' => $titre,
             'url' => $donnees['url'] ?? null,
@@ -44,7 +39,6 @@ class CadeauController extends Controller
             'price' => $prix,
             'quantity' => $donnees['quantity'] ?? 1,
             'favorite' => $request->boolean('favorite'),
-            'shared' => $request->boolean('shared'),
             'note' => $donnees['note'] ?? null,
         ]);
 

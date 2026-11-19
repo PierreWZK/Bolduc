@@ -80,7 +80,6 @@ class IdeeController extends Controller
             'price' => $idee->price,
             'quantity' => 1,
             'favorite' => false,
-            'shared' => false,
             'secret' => false,
         ];
     }
