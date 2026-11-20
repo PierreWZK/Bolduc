@@ -1,6 +1,11 @@
 <x-layout :titre="$liste->title" :noindex="true">
+    @php
+        // « 89 € » pour un prix rond, « 89,50 € » sinon.
+        $euros = fn ($montant) => number_format((float) $montant, fmod((float) $montant, 1) == 0 ? 0 : 2, ',', ' ').' €';
+        $teintes = ['rose', 'menthe', 'or'];
+    @endphp
     <section class="section conteneur">
-        <a href="{{ route('listes') }}" class="lien">Mes listes</a>
+        <a href="{{ route('listes') }}" class="lien liste-retour">Mes listes</a>
 
         @if (session('statut'))
             <p class="message" role="status">{{ session('statut') }}</p>
@@ -16,19 +21,23 @@
 
         <div class="liste-actions">
             <a href="{{ route('listes.edit', $liste) }}" class="bouton bouton-contour bouton-mini">Modifier les réglages</a>
-            <form method="POST" action="{{ route('listes.archiver', $liste) }}">
-                @csrf
-                <button type="submit" class="bouton bouton-contour bouton-mini">{{ $liste->archived_at ? 'Ressortir des archives' : 'Archiver' }}</button>
-            </form>
+            <details class="menu-liste">
+                <summary class="bouton bouton-contour bouton-mini">Plus d'options</summary>
+                <form method="POST" action="{{ route('listes.archiver', $liste) }}">
+                    @csrf
+                    <button type="submit" class="lien">{{ $liste->archived_at ? 'Ressortir des archives' : 'Archiver la liste' }}</button>
+                </form>
+            </details>
         </div>
 
         @php $lien = route('invite', $liste->share_token); @endphp
-        <div class="carte lien-secret" x-data="{ copie: false }">
+        <div class="carte lien-secret" x-data="{ copie: false, partageable: !!navigator.share }">
             <h2 class="h3">Le lien pour tes proches</h2>
             <p>Envoie-le par message ou par mail. Tes proches réservent, toi tu ne vois rien.</p>
             <div class="lien-partage">
                 <input type="text" value="{{ $lien }}" readonly aria-label="Lien de la liste" @focus="$el.select()">
                 <button type="button" class="bouton bouton-encre bouton-mini" @click="navigator.clipboard.writeText(@js($lien)); copie = true" x-text="copie ? 'Copié' : 'Copier'">Copier</button>
+                <button type="button" class="bouton bouton-contour bouton-mini" x-show="partageable" @click="navigator.share({ title: @js($liste->title), url: @js($lien) })">Partager</button>
             </div>
         </div>
 
@@ -37,10 +46,7 @@
             <p class="legende">La date est passée : voici qui a offert quoi. Coche « merci envoyé » une fois fait.</p>
 
             @forelse ($liste->cadeaux as $cadeau)
-                @php
-                    $donneurs = $cadeau->reservations->pluck('invite.name')
-                        ->merge($cadeau->contributions->map(fn ($part) => $part->invite?->name.' ('.number_format((float) $part->amount, 2, ',', ' ').' €)'));
-                @endphp
+                @php $donneurs = $cadeau->reservations->pluck('invite.name'); @endphp
                 <article class="cadeau-fiche">
                     <div class="cadeau-texte">
                         <strong>{{ $cadeau->title }}</strong>
@@ -49,6 +55,8 @@
                                 Idée de {{ $cadeau->ajouteePar?->name }}, en secret
                             @elseif ($donneurs->isNotEmpty())
                                 Offert par {{ $donneurs->join(', ') }}
+                            @elseif ($cadeau->contributions->isNotEmpty())
+                                Financé à plusieurs, les noms restent entre invités
                             @else
                                 Personne ne l'a réservé
                             @endif
@@ -67,32 +75,34 @@
         @else
         <h2 class="h3 cadeaux-titre">Les cadeaux <span class="legende">({{ $liste->cadeaux->count() }})</span></h2>
 
+        <div class="emballages">
         @forelse ($liste->cadeaux as $cadeau)
-            <article class="cadeau-fiche">
-                @if ($cadeau->image_url)
-                    <img src="{{ $cadeau->image_url }}" alt="" loading="lazy" width="72" height="72" class="cadeau-photo">
-                @else
-                    <span class="cadeau-icone teinte-or"><x-icone nom="cadeau" /></span>
-                @endif
+            {{-- Côté créateur, le paquet reste fermé : aucune info de réservation n'apparaît. --}}
+            <article class="emballage">
+                <div class="emballage-visuel teinte-{{ $teintes[$cadeau->id % 3] }}">
+                    @if ($cadeau->image_url)
+                        <img src="{{ $cadeau->image_url }}" alt="" loading="lazy" width="400" height="267" class="emballage-photo">
+                    @else
+                        <x-icone nom="cadeau" />
+                    @endif
 
+                    @if ($cadeau->favorite)
+                        <span class="emballage-badge"><x-icone nom="coeur" /> Coup de cœur</span>
+                    @endif
+                </div>
+
+                <div class="emballage-corps">
                 <div class="cadeau-texte">
                     <strong>{{ $cadeau->title }}</strong>
                     <span>
-                        @if ($cadeau->price) {{ number_format($cadeau->price, 2, ',', ' ') }} € · @endif
-                        {{ $cadeau->quantity }} {{ $cadeau->quantity > 1 ? 'exemplaires' : 'exemplaire' }}
+                        @if ($cadeau->price) {{ $euros($cadeau->price) }} @endif
+                        @if ($cadeau->quantity > 1) · {{ $cadeau->quantity }} exemplaires @endif
                         @if ($cadeau->note) · {{ $cadeau->note }} @endif
                     </span>
                     @if ($cadeau->url)
                         <a href="{{ $cadeau->url }}" rel="nofollow noopener" target="_blank" class="lien">Voir la boutique</a>
                     @endif
                 </div>
-
-                @if ($cadeau->favorite)
-                    <span class="pastille pastille-rose">Coup de cœur</span>
-                @endif
-                @if ($cadeau->shared)
-                    <span class="pastille pastille-encre">À plusieurs</span>
-                @endif
 
                 <details class="cadeau-edition">
                     <summary class="lien">Modifier</summary>
@@ -131,38 +141,53 @@
                         <button type="submit" class="bouton bouton-encre bouton-mini">Enregistrer</button>
                     </form>
                 </details>
-                <form method="POST" action="{{ route('cadeaux.destroy', [$liste, $cadeau]) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="lien">Retirer</button>
-                </form>
+                <div class="emballage-actions" x-data="{ confirme: false }">
+                    <button type="button" class="lien" x-show="! confirme" @click="confirme = true">Retirer</button>
+                    <span x-show="confirme" x-cloak>
+                        Retirer ce cadeau ?
+                        <form method="POST" action="{{ route('cadeaux.destroy', [$liste, $cadeau]) }}" class="en-ligne">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="lien">Oui, retirer</button>
+                        </form>
+                        <button type="button" class="lien" @click="confirme = false">Annuler</button>
+                    </span>
+                    <form method="POST" action="{{ route('cadeaux.monter', [$liste, $cadeau]) }}" class="en-ligne">
+                        @csrf
+                        <button type="submit" class="lien">Monter</button>
+                    </form>
+                    <form method="POST" action="{{ route('cadeaux.descendre', [$liste, $cadeau]) }}" class="en-ligne">
+                        @csrf
+                        <button type="submit" class="lien">Descendre</button>
+                    </form>
+                </div>
+                </div>
             </article>
         @empty
             <p class="legende">Pas encore de cadeau. Colle un lien de boutique ci-dessous.</p>
         @endforelse
+        </div>
         @unless ($passee)
         <div class="carte ajout-cadeau">
             <h2 class="h3">Ajouter un cadeau</h2>
             <form method="POST" action="{{ route('cadeaux.store', $liste) }}" class="formulaire">
                 @csrf
-                <x-champ nom="url" libelle="Lien de la boutique" type="url" aide="Titre, image et prix sont lus tout seuls." />
-                <x-champ nom="title" libelle="Titre (si la boutique ne se lit pas)" />
-                <div class="ajout-ligne">
-                    <x-champ nom="price" libelle="Prix (€)" type="number" step="0.01" min="0" />
-                    <x-champ nom="quantity" libelle="Quantité" type="number" min="1" max="99" value="1" />
-                </div>
-                <x-champ nom="note" libelle="Une précision (taille, couleur…)" />
-                <label class="coeur">
-                    <input type="checkbox" name="favorite" value="1">
-                    Coup de cœur
-                </label>
-                <label class="coeur">
-                    <input type="checkbox" name="shared" value="1">
-                    À plusieurs : tes proches se partagent le prix
-                </label>
-                @error('shared')
-                    <p class="erreur">{{ $message }}</p>
-                @enderror
+                <x-champ nom="url" libelle="Colle un lien de boutique" type="url" aide="Titre, image et prix sont lus tout seuls." />
+                <details class="ajout-details" @if ($errors->any()) open @endif>
+                    <summary class="lien">Préciser ou corriger (titre, prix, quantité…)</summary>
+                    <div class="formulaire">
+                        <x-champ nom="title" libelle="Titre (si la boutique ne se lit pas)" />
+                        <div class="ajout-ligne">
+                            <x-champ nom="price" libelle="Prix (€)" type="number" step="0.01" min="0" />
+                            <x-champ nom="quantity" libelle="Quantité" type="number" min="1" max="99" value="1" />
+                        </div>
+                        <x-champ nom="note" libelle="Une précision (taille, couleur…)" />
+                        <label class="coeur">
+                            <input type="checkbox" name="favorite" value="1">
+                            Coup de cœur
+                        </label>
+                    </div>
+                </details>
                 <button type="submit" class="bouton bouton-plein">Ajouter à la liste</button>
             </form>
         </div>

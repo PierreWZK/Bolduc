@@ -20,7 +20,6 @@ class CadeauController extends Controller
             'quantity' => ['nullable', 'integer', 'min:1', 'max:99'],
             'note' => ['nullable', 'string', 'max:120'],
             'favorite' => ['nullable', 'boolean'],
-            'shared' => ['nullable', 'boolean'],
         ]);
 
         $lu = filled($donnees['url'] ?? null)
@@ -33,18 +32,14 @@ class CadeauController extends Controller
         }
 
         $prix = $donnees['price'] ?? $lu['price'];
-        if ($request->boolean('shared') && ! $prix) {
-            return back()->withInput()->withErrors(['shared' => 'Un cadeau à plusieurs a besoin d\'un prix : la barre se remplit jusqu\'à lui.']);
-        }
-
         $liste->cadeaux()->create([
+            'position' => $liste->cadeaux()->max('position') + 1,
             'title' => $titre,
             'url' => $donnees['url'] ?? null,
             'image_url' => $lu['image'],
             'price' => $prix,
             'quantity' => $donnees['quantity'] ?? 1,
             'favorite' => $request->boolean('favorite'),
-            'shared' => $request->boolean('shared'),
             'note' => $donnees['note'] ?? null,
         ]);
 
@@ -90,6 +85,38 @@ class CadeauController extends Controller
         abort_unless($liste->estPassee(), 403, 'Les remerciements s\'ouvrent après la date.');
 
         $cadeau->update(['thanked' => ! $cadeau->thanked]);
+
+        return back();
+    }
+
+    // Remonte ou descend le cadeau d'un cran dans la liste ; la liste est renumérotée d'abord, pour éviter les égalités.
+    public function monter(Request $request, Liste $liste, Cadeau $cadeau)
+    {
+        return $this->deplacer($request, $liste, $cadeau, -1);
+    }
+
+    public function descendre(Request $request, Liste $liste, Cadeau $cadeau)
+    {
+        return $this->deplacer($request, $liste, $cadeau, 1);
+    }
+
+    private function deplacer(Request $request, Liste $liste, Cadeau $cadeau, int $sens)
+    {
+        abort_unless($liste->estProprietaire($request->user()), 404);
+        abort_unless($cadeau->list_id === $liste->id, 404);
+
+        $cadeaux = $liste->cadeaux()->get()->values();
+        $cadeaux->each(fn (Cadeau $item, int $rang) => $item->update(['position' => $rang + 1]));
+
+        $index = $cadeaux->search(fn (Cadeau $item) => $item->id === $cadeau->id);
+        $voisin = $cadeaux->get($index + $sens);
+
+        if ($voisin) {
+            $moi = $cadeaux->get($index);
+            [$moi->position, $voisin->position] = [$voisin->position, $moi->position];
+            $moi->save();
+            $voisin->save();
+        }
 
         return back();
     }

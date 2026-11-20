@@ -14,7 +14,11 @@
         @endif
 
         @if ($invite)
-            <p class="invite-bonjour">Bonjour {{ $invite->name }} ! Réserve ce que tu offres : {{ $proprietaires }} ne verra rien.</p>
+            <div class="carte bienvenue">
+                <h2 class="h3">Bonjour {{ $invite->name }} !</h2>
+                <p class="compte-texte">Réserve ce que tu offres : {{ $proprietaires }} ne verra rien. Plusieurs invités peuvent aussi participer à un même cadeau.</p>
+                <p class="bienvenue-lien">Une idée à glisser en secret ? <a href="{{ route('invite.idees', $liste->share_token) }}" class="lien">Voir les idées</a></p>
+            </div>
             <livewire:liste-invite :liste="$liste" :invite="$invite" />
         @else
             <div class="carte compte-carte invite-prenom">
@@ -25,6 +29,7 @@
                     <x-champ nom="name" libelle="Ton prénom" autocomplete="given-name" required autofocus />
                     <x-champ nom="email" libelle="Ton e-mail (facultatif)" type="email" autocomplete="email" aide="Pour un rappel avant la fête, rien d'autre." />
                     <x-champ nom="magic_word" libelle="Ton mot magique" type="password" autocomplete="new-password" aide="Un petit mot à toi, pour te retrouver depuis un autre appareil." required />
+                    <x-piege />
                     <button type="submit" class="bouton bouton-plein">Voir la liste</button>
                 </form>
             </div>

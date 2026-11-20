@@ -41,10 +41,33 @@
             <button type="submit" class="bouton bouton-encre">Filtrer</button>
         </form>
 
+        <form method="POST" action="{{ route('idees.assistant') }}" class="carte assistant">
+            @csrf
+            <h2 class="h3">Une idée pour quelqu'un ?</h2>
+            <p class="legende">Décris la personne et l'occasion. L'assistant ne répond qu'aux idées cadeaux.</p>
+            <div class="champ">
+                <label for="question">Ta demande</label>
+                <textarea id="question" name="question" rows="3" maxlength="300" minlength="5" required>{{ old('question') }}</textarea>
+                @error('question')
+                    <p class="erreur">{{ $message }}</p>
+                @enderror
+            </div>
+            <x-piege />
+            <button type="submit" class="bouton bouton-plein bouton-mini">Demander</button>
+            @if (session('assistant'))
+                <p class="message" role="status">{{ session('assistant') }}</p>
+            @endif
+        </form>
+
         <div class="idees">
             @forelse ($idees as $idee)
                 <article class="carte idee">
-                    <span class="rond teinte-or"><x-icone :nom="$idee->icon" /></span>
+                    @if ($idee->image)
+                        <img src="{{ asset($idee->image) }}" alt="" loading="lazy" width="400" height="300" class="idee-photo">
+                        <p class="idee-credit">{{ $idee->credit }}</p>
+                    @else
+                        <span class="rond teinte-or"><x-icone :nom="$idee->icon" /></span>
+                    @endif
                     <span class="pastille pastille-rose">{{ ucfirst($idee->category) }}</span>
                     <h2 class="h3">{{ $idee->title }}</h2>
                     <p>{{ $idee->description }}</p>

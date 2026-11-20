@@ -233,6 +233,25 @@ a { color: inherit; }
 .invite-bonjour { margin-bottom: 8px; font-size: 19px; }
 .invite-prenom { margin: 8px 0 0; }
 .cadeau-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 12px; }
+/* Concept A : chaque cadeau est un paquet emballé ; un cadeau pris a son ruban noué (bolduc si c'est le tien). */
+.emballages { display: grid; gap: 16px; margin-top: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.emballage { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--filet); border-radius: 20px; background: #fff; }
+.emballage-visuel { position: relative; display: grid; place-items: center; aspect-ratio: 3 / 2; overflow: hidden; }
+.emballage-visuel > .icone { width: 48px; height: 48px; }
+.emballage-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.emballage-badge { position: absolute; top: 12px; left: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 999px; background: #fff; color: var(--bolduc); font: 600 13px/1 var(--texte); box-shadow: var(--ombre); }
+.emballage-badge .icone { width: 14px; height: 14px; fill: currentColor; }
+.emballage-corps { display: grid; flex: 1; align-content: space-between; gap: 14px; padding: 16px; }
+.emballage .cadeau-actions { justify-content: flex-start; }
+.emballage-ruban { position: absolute; inset: 0; color: var(--or); pointer-events: none; }
+.emballage-mien .emballage-ruban { color: var(--bolduc); }
+.emballage-ruban::before, .emballage-ruban::after { content: ''; position: absolute; background: currentColor; box-shadow: 0 0 0 2px rgb(255 255 255 / .35); }
+.emballage-ruban::before { top: 0; bottom: 0; left: 50%; width: 14px; margin-left: -7px; animation: ruban-vertical .35s ease-out both; }
+.emballage-ruban::after { left: 0; right: 0; top: 50%; height: 14px; margin-top: -7px; animation: ruban-horizontal .35s .1s ease-out both; }
+.emballage-noeud { position: absolute; top: 50%; left: 50%; z-index: 1; width: 76px; margin: -22px 0 0 -38px; fill: currentColor; stroke: currentColor; filter: drop-shadow(0 4px 6px rgb(42 21 51 / .25)); animation: noeud-pose .45s .3s cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes ruban-vertical { from { transform: scaleY(0); } }
+@keyframes ruban-horizontal { from { transform: scaleX(0); } }
+@keyframes noeud-pose { from { transform: scale(0) rotate(-20deg); } }
 .part-saisie { display: flex; gap: 8px; }
 .part-saisie input { width: 120px; min-height: 36px; padding: 0 14px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; font-size: 15px; }
 .part-saisie input:focus { outline: none; border-color: var(--encre); background: #fff; }
@@ -246,6 +265,8 @@ a { color: inherit; }
 @media (min-width: 640px) { .idees { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 960px) { .idees { grid-template-columns: repeat(3, 1fr); } }
 .idee { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.idee-photo { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 16px; }
+.idee-credit { font-size: 12px; line-height: 1.4; color: var(--brume); }
 .idee p { color: var(--brume); }
 .idee .h3 { margin-top: 6px; }
 .idee form { margin-top: auto; padding-top: 8px; }
@@ -273,6 +294,10 @@ a { color: inherit; }
 .champ input { min-height: 52px; padding: 0 20px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; color: inherit; transition: border-color .2s ease, background-color .2s ease; }
 .champ input:focus { outline: none; border-color: var(--encre); background: #fff; }
 .champ input[aria-invalid="true"] { border-color: var(--bolduc); }
+.champ textarea { min-height: 96px; padding: 14px 20px; border: 1px solid var(--filet); border-radius: 24px; background: var(--papier); font: inherit; color: inherit; resize: vertical; }
+.champ textarea:focus { outline: none; border-color: var(--encre); background: #fff; }
+.assistant { display: grid; gap: 14px; margin-bottom: 32px; }
+.champ-piege { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .aide { font-size: 14px; color: var(--brume); padding-left: 20px; }
 .erreur { font-size: 14px; font-weight: 600; color: var(--bolduc); padding-left: 20px; }
 .message { margin-bottom: 20px; padding: 14px 18px; border-radius: 16px; background: var(--menthe-pale); color: var(--menthe-texte); font-size: 15px; font-weight: 500; }
@@ -305,7 +330,7 @@ a { color: inherit; }
     .indices li { flex-direction: column; align-items: flex-start; gap: 2px; }
 }
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
 
 /* Jeux du jour (/jeux) */
@@ -325,3 +350,27 @@ a { color: inherit; }
 .champ-mini { min-height: 36px; min-width: 0; flex: 1 1 160px; padding: 0 16px; border: 1px solid var(--filet); border-radius: 999px; background: var(--papier); font: inherit; font-size: 15px; }
 [x-cloak] { display: none !important; }
 .jeu-choix { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; max-height: 240px; overflow-y: auto; }
+
+/* Liste invité (6b) : toast avec annulation, récap, filtres, carte de bienvenue */
+.toast { position: fixed; left: 50%; bottom: 20px; z-index: 50; display: flex; align-items: center; gap: 14px; width: max-content; max-width: calc(100% - 32px); transform: translateX(-50%); padding: 12px 14px 12px 20px; border-radius: 999px; background: var(--encre); color: #fff; font: 500 15px/1.4 var(--texte); box-shadow: var(--ombre); animation: toast-entree .3s ease-out both; }
+.toast .lien { color: var(--or); font-weight: 600; }
+.toast-fermer { min-width: 32px; min-height: 32px; border: 0; border-radius: 999px; background: rgb(255 255 255 / .12); color: #fff; font: 600 18px/1 var(--texte); cursor: pointer; }
+@keyframes toast-entree { from { opacity: 0; transform: translate(-50%, 12px); } }
+.recap { margin: 24px 0 0; padding: 16px 20px; border-radius: 20px; background: var(--or-pale); color: var(--or-texte); }
+.recap p { margin: 0; }
+.filtres-invite { align-items: center; }
+.case-filtre { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; font-size: 15px; font-weight: 500; cursor: pointer; }
+.case-filtre input { width: 20px; height: 20px; accent-color: var(--bolduc); }
+.bienvenue { margin-top: 24px; }
+.bienvenue-lien { margin: 10px 0 0; font-size: 15px; }
+@media (prefers-reduced-motion: reduce) { .toast { animation: none; } }
+
+/* Créateur (6c-b) : retour, menu d'options, actions d'un cadeau, ajout en deux temps */
+.liste-retour { display: inline-block; margin-bottom: 20px; }
+.menu-liste summary { list-style: none; cursor: pointer; }
+.menu-liste summary::-webkit-details-marker { display: none; }
+.menu-liste form { margin-top: 10px; }
+.emballage-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.en-ligne { display: inline; margin: 0; }
+.ajout-details { margin-bottom: 8px; }
+.ajout-details summary { cursor: pointer; margin-bottom: 14px; }

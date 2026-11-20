@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Idee;
 use App\Models\Invite;
 use App\Models\Liste;
+use App\Services\AssistantIdees;
 use Illuminate\Http\Request;
 
 class IdeeController extends Controller
@@ -44,6 +45,19 @@ class IdeeController extends Controller
         ]);
     }
 
+    // Assistant public : répond aux idées cadeaux seulement. Le champ piège écarte les robots sans message.
+    public function assistant(Request $request, AssistantIdees $assistant)
+    {
+        if (filled($request->input('site_web'))) {
+            return back();
+        }
+
+        $donnees = $request->validate(['question' => ['required', 'string', 'min:5', 'max:300']]);
+        $reponse = $assistant->repondre($donnees['question']);
+
+        return back()->with('assistant', $reponse ?? 'L\'assistant est indisponible pour le moment. Réessaie plus tard.');
+    }
+
     // Le propriétaire ajoute l'idée à une de ses listes.
     public function ajouter(Request $request, Idee $idee)
     {
@@ -80,7 +94,6 @@ class IdeeController extends Controller
             'price' => $idee->price,
             'quantity' => 1,
             'favorite' => false,
-            'shared' => false,
             'secret' => false,
         ];
     }

@@ -8,7 +8,7 @@ class Idee extends Model
 {
     protected $table = 'ideas';
 
-    protected $fillable = ['title', 'description', 'category', 'icon', 'price', 'events'];
+    protected $fillable = ['title', 'description', 'category', 'icon', 'image', 'credit', 'price', 'events'];
 
     protected $casts = [
         'price' => 'decimal:2',
