@@ -10,7 +10,7 @@ class Cadeau extends Model
 {
     protected $table = 'gifts';
 
-    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'secret', 'added_by', 'note', 'thanked'];
+    protected $fillable = ['title', 'url', 'image_url', 'price', 'quantity', 'favorite', 'secret', 'added_by', 'note', 'thanked', 'position'];
 
     protected $casts = [
         'price' => 'decimal:2',

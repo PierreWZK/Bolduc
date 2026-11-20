@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/mes-listes/{liste}/cadeaux', [CadeauController::class, 'store'])->name('cadeaux.store');
     Route::put('/mes-listes/{liste}/cadeaux/{cadeau}', [CadeauController::class, 'update'])->name('cadeaux.update');
     Route::delete('/mes-listes/{liste}/cadeaux/{cadeau}', [CadeauController::class, 'destroy'])->name('cadeaux.destroy');
+    Route::post('/mes-listes/{liste}/cadeaux/{cadeau}/monter', [CadeauController::class, 'monter'])->name('cadeaux.monter');
+    Route::post('/mes-listes/{liste}/cadeaux/{cadeau}/descendre', [CadeauController::class, 'descendre'])->name('cadeaux.descendre');
     Route::post('/mes-listes/{liste}/cadeaux/{cadeau}/merci', [CadeauController::class, 'merci'])->name('cadeaux.merci');
     Route::post('/deconnexion', [AuthController::class, 'deconnexion'])->name('deconnexion');
 });

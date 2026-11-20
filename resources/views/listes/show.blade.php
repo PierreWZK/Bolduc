@@ -5,7 +5,7 @@
         $teintes = ['rose', 'menthe', 'or'];
     @endphp
     <section class="section conteneur">
-        <a href="{{ route('listes') }}" class="lien">Mes listes</a>
+        <a href="{{ route('listes') }}" class="lien liste-retour">Mes listes</a>
 
         @if (session('statut'))
             <p class="message" role="status">{{ session('statut') }}</p>
@@ -21,19 +21,23 @@
 
         <div class="liste-actions">
             <a href="{{ route('listes.edit', $liste) }}" class="bouton bouton-contour bouton-mini">Modifier les réglages</a>
-            <form method="POST" action="{{ route('listes.archiver', $liste) }}">
-                @csrf
-                <button type="submit" class="bouton bouton-contour bouton-mini">{{ $liste->archived_at ? 'Ressortir des archives' : 'Archiver' }}</button>
-            </form>
+            <details class="menu-liste">
+                <summary class="bouton bouton-contour bouton-mini">Plus d'options</summary>
+                <form method="POST" action="{{ route('listes.archiver', $liste) }}">
+                    @csrf
+                    <button type="submit" class="lien">{{ $liste->archived_at ? 'Ressortir des archives' : 'Archiver la liste' }}</button>
+                </form>
+            </details>
         </div>
 
         @php $lien = route('invite', $liste->share_token); @endphp
-        <div class="carte lien-secret" x-data="{ copie: false }">
+        <div class="carte lien-secret" x-data="{ copie: false, partageable: !!navigator.share }">
             <h2 class="h3">Le lien pour tes proches</h2>
             <p>Envoie-le par message ou par mail. Tes proches réservent, toi tu ne vois rien.</p>
             <div class="lien-partage">
                 <input type="text" value="{{ $lien }}" readonly aria-label="Lien de la liste" @focus="$el.select()">
                 <button type="button" class="bouton bouton-encre bouton-mini" @click="navigator.clipboard.writeText(@js($lien)); copie = true" x-text="copie ? 'Copié' : 'Copier'">Copier</button>
+                <button type="button" class="bouton bouton-contour bouton-mini" x-show="partageable" @click="navigator.share({ title: @js($liste->title), url: @js($lien) })">Partager</button>
             </div>
         </div>
 
@@ -137,11 +141,26 @@
                         <button type="submit" class="bouton bouton-encre bouton-mini">Enregistrer</button>
                     </form>
                 </details>
-                <form method="POST" action="{{ route('cadeaux.destroy', [$liste, $cadeau]) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="lien">Retirer</button>
-                </form>
+                <div class="emballage-actions" x-data="{ confirme: false }">
+                    <button type="button" class="lien" x-show="! confirme" @click="confirme = true">Retirer</button>
+                    <span x-show="confirme" x-cloak>
+                        Retirer ce cadeau ?
+                        <form method="POST" action="{{ route('cadeaux.destroy', [$liste, $cadeau]) }}" class="en-ligne">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="lien">Oui, retirer</button>
+                        </form>
+                        <button type="button" class="lien" @click="confirme = false">Annuler</button>
+                    </span>
+                    <form method="POST" action="{{ route('cadeaux.monter', [$liste, $cadeau]) }}" class="en-ligne">
+                        @csrf
+                        <button type="submit" class="lien">Monter</button>
+                    </form>
+                    <form method="POST" action="{{ route('cadeaux.descendre', [$liste, $cadeau]) }}" class="en-ligne">
+                        @csrf
+                        <button type="submit" class="lien">Descendre</button>
+                    </form>
+                </div>
                 </div>
             </article>
         @empty
@@ -153,17 +172,22 @@
             <h2 class="h3">Ajouter un cadeau</h2>
             <form method="POST" action="{{ route('cadeaux.store', $liste) }}" class="formulaire">
                 @csrf
-                <x-champ nom="url" libelle="Lien de la boutique" type="url" aide="Titre, image et prix sont lus tout seuls." />
-                <x-champ nom="title" libelle="Titre (si la boutique ne se lit pas)" />
-                <div class="ajout-ligne">
-                    <x-champ nom="price" libelle="Prix (€)" type="number" step="0.01" min="0" />
-                    <x-champ nom="quantity" libelle="Quantité" type="number" min="1" max="99" value="1" />
-                </div>
-                <x-champ nom="note" libelle="Une précision (taille, couleur…)" />
-                <label class="coeur">
-                    <input type="checkbox" name="favorite" value="1">
-                    Coup de cœur
-                </label>
+                <x-champ nom="url" libelle="Colle un lien de boutique" type="url" aide="Titre, image et prix sont lus tout seuls." />
+                <details class="ajout-details" @if ($errors->any()) open @endif>
+                    <summary class="lien">Préciser ou corriger (titre, prix, quantité…)</summary>
+                    <div class="formulaire">
+                        <x-champ nom="title" libelle="Titre (si la boutique ne se lit pas)" />
+                        <div class="ajout-ligne">
+                            <x-champ nom="price" libelle="Prix (€)" type="number" step="0.01" min="0" />
+                            <x-champ nom="quantity" libelle="Quantité" type="number" min="1" max="99" value="1" />
+                        </div>
+                        <x-champ nom="note" libelle="Une précision (taille, couleur…)" />
+                        <label class="coeur">
+                            <input type="checkbox" name="favorite" value="1">
+                            Coup de cœur
+                        </label>
+                    </div>
+                </details>
                 <button type="submit" class="bouton bouton-plein">Ajouter à la liste</button>
             </form>
         </div>

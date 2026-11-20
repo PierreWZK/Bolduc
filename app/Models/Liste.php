@@ -36,7 +36,7 @@ class Liste extends Model
 
     public function cadeaux(): HasMany
     {
-        return $this->hasMany(Cadeau::class, 'list_id')->orderBy('id');
+        return $this->hasMany(Cadeau::class, 'list_id')->orderBy('position')->orderBy('id');
     }
 
     public function invites(): HasMany
